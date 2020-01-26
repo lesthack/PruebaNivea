@@ -5,9 +5,9 @@ from core.models import *
 import datetime
 
 admin.site.register(Escala)
-admin.site.register(ItemEscala)
+admin.site.register(EscalaItem)
 admin.site.register(Instrumento)
-admin.site.register(ItemInstrumento)
+admin.site.register(InstrumentoItem)
 admin.site.register(Aplicacion)
 
 class aplicacionItemForm(forms.ModelForm):

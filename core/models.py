@@ -19,7 +19,7 @@ class Escala(models.Model):
     def __str__(self):
         return '{}'.format(self.nombre)
 
-class ItemEscala(models.Model):
+class EscalaItem(models.Model):
     escala = models.ForeignKey(Escala, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=250)
     valor = models.IntegerField(default=-1)
@@ -27,14 +27,14 @@ class ItemEscala(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
 
     def __str__(self):
-        return '{} - {}'.format(self.id, self.nombre)
+        return '{}: {}'.format(self.escala, self.nombre)
 
-class ItemInstrumento(models.Model):
+class InstrumentoItem(models.Model):
     instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE)
     pregunta = models.CharField(max_length=500)
     descripcion = models.TextField()
     escala = models.ForeignKey(Escala, on_delete=models.CASCADE)
-    grupo = models.CharField(max_length=250)
+    grupo = models.CharField(max_length=250, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,7 +61,6 @@ class Aplicacion(models.Model):
         (4, 'Separado/a'),
         (5, 'Viudo/a'),
     )
-    codigo = models.CharField(max_length=10, blank=True)
     fecha = models.DateField(default=datetime.date.today)
     edad = models.IntegerField() # Agregar validacion
     sexo = models.IntegerField(choices=GENERO_CHOICES)
@@ -77,11 +76,11 @@ class Aplicacion(models.Model):
         return 'Aplicacion {}'.format(self.id)
 
 class AplicacionItem(models.Model):
-    item = models.ForeignKey(ItemInstrumento, on_delete=models.CASCADE)
-    respuesta = models.ForeignKey(ItemEscala, on_delete=models.CASCADE)
+    item = models.ForeignKey(InstrumentoItem, on_delete=models.CASCADE)
+    respuesta = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return '{}. {}: {}'.format(self.item.instrumento.nombre, self.item.pregunta, self.respuesta.valor)
+        return '{}. {}: {}'.format(self.item.instrumento.nombre, self.item.pregunta, self.respuesta)

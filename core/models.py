@@ -32,7 +32,7 @@ class EscalaItem(models.Model):
 class InstrumentoItem(models.Model):
     instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE)
     pregunta = models.CharField(max_length=500)
-    descripcion = models.TextField()
+    descripcion = models.TextField(blank=True, null=True)
     escala = models.ForeignKey(Escala, on_delete=models.CASCADE)
     grupo = models.CharField(max_length=250, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add = True)

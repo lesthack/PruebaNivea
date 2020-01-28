@@ -77,7 +77,7 @@ class Aplicacion(models.Model):
 
 class AplicacionItem(models.Model):
     item = models.ForeignKey(InstrumentoItem, on_delete=models.CASCADE)
-    respuesta = models.IntegerField()
+    respuesta = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)

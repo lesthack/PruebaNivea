@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib import admin
 from core.models import *
+from django.utils.safestring import mark_safe
 import datetime
 
 admin.site.register(Escala)
@@ -52,18 +53,25 @@ class aplicacionAdmin(admin.ModelAdmin):
             obj.created_by = request.user
         obj.save()
 
+class HorizontalRadioRender(forms.RadioSelect):
+    def render(self):
+        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
 class aplicacionItemForm(forms.ModelForm):
     class Meta:
         model = AplicacionItem
-        exclude = ['created_at', 'updated_at', 'created_by']
+        exclude = ['created_by']
+        widgets = {
+            'respuesta': forms.RadioSelect
+        }
 
     def __init__(self, *args, **kwargs):
         super(aplicacionItemForm, self).__init__(*args, **kwargs)
-        obj = self.fields['item'].queryset.model
-        print(obj.escala)
-        self.fields['respuesta'].queryset = EscalaItem.objects.filter(escala_id=1)
-        #self.fields['category'].queryset = Category.objects.filter(user=user)
-
+        if self.instance:
+            view_escala = [(i.id, i.nombre) for i in EscalaItem.objects.filter(escala=self.instance.item.escala)]
+            self.fields['respuesta'] = forms.ChoiceField(choices=view_escala, widget=forms.RadioSelect)
+            #self.fields['respuesta'].widget = forms.RadioSelect
+            
 @admin.register(AplicacionItem)
 class aplicacionItemAdmin(admin.ModelAdmin):
     list_display = ['item', 'respuesta', 'created_at', 'created_by']

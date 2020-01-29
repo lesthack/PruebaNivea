@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
@@ -76,8 +77,9 @@ class Aplicacion(models.Model):
         return 'Aplicacion {}'.format(self.id)
 
 class AplicacionItem(models.Model):
+    aplicacion = models.ForeignKey(Aplicacion, on_delete=models.CASCADE)
     item = models.ForeignKey(InstrumentoItem, on_delete=models.CASCADE)
-    respuesta = models.IntegerField(default=0)
+    respuesta = models.IntegerField(default=-1)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)

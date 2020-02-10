@@ -37,9 +37,15 @@ def inserts_categorias():
     Categoria.objects.get_or_create(nombre='Liderazgo negativo', orden=9)
     Categoria.objects.get_or_create(nombre='Autocuidado', orden=10)
 
+def inserts_localidades():
+    Localidad.objects.get_or_create(nombre='Guanajuato')
+    Localidad.objects.get_or_create(nombre='Irapuato')
+    Localidad.objects.get_or_create(nombre='León')
+    Localidad.objects.get_or_create(nombre='Romita')
+    Localidad.objects.get_or_create(nombre='Silao')
+
 def inserts_instrumento():
     me = User.objects.get(id=1)
-    instrumento_ejemplo, c = Instrumento.objects.get_or_create(nombre='Ejemplo', created_by=me)
 
     lista_preguntas = {
         'Likert1': [
@@ -127,9 +133,25 @@ def inserts_instrumento():
             [80,'Mis compañeras/os o jefes se oponían a mi forma de pensar.',[0,1,2,3,4]],
         ]
     }
-
-    for i in lista_preguntas['Likert1']:
-        print(i)
+    
+    instrumento_ejemplo, c = Instrumento.objects.get_or_create(nombre='Ejemplo', created_by=me)
+    for nombre_escala in lista_preguntas.keys():
+        view_escala = Escala.objects.get(nombre=nombre_escala)
+        lista_escala = list(view_escala.getItems())
+        for pregunta in lista_preguntas[nombre_escala]:
+            new_instrumento_item, c = InstrumentoItem.objects.get_or_create(
+                instrumento = instrumento_ejemplo,
+                pregunta = pregunta[1],
+                orden = pregunta[0],
+                escala = view_escala
+            )
+            if new_instrumento_item:
+                for i in range(len(pregunta[2])):
+                    InstrumentoValor.objects.get_or_create(
+                        instrumento_item = new_instrumento_item,
+                        escala_item = lista_escala[i],
+                        valor = pregunta[2][i]
+                    )
 
 #def inserts_instrumento():
 #    me = User.objects.get(id=1)

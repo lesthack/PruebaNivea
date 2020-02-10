@@ -44,7 +44,7 @@ class Categoria(models.Model):
 
 class InstrumentoItem(models.Model):
     instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    categoria = models.ManyToManyField(Categoria)
     pregunta = models.CharField(max_length=500)
     orden = models.IntegerField(default=0)
     escala = models.ForeignKey(Escala, on_delete=models.CASCADE)

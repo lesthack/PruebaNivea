@@ -12,9 +12,9 @@ def nueva_aplicacion(sender, instance, **kwargs):
         Cuando se crea una nueva aplicacion, se deben crear
         los Items según el instrumento elegido
     """
-    for instrumento_item in InstrumentoItem.objects.filter(instrumento=instance.instrumento):
-        aplicacion_item = AplicacionItem(
-            aplicacion = instance,
-            item = instrumento_item,
-            created_by = instance.created_by
-        ).save()
+    #for instrumento_item in InstrumentoItem.objects.filter(instrumento=instance.instrumento):
+    #    aplicacion_item = AplicacionItem(
+    #        aplicacion = instance,
+    #        item = instrumento_item,
+    #        created_by = instance.created_by
+    #    ).save()

@@ -19,54 +19,54 @@ class escalaItemAdmin(admin.ModelAdmin):
     list_filter = ['escala__nombre']
     ordering = ['escala__nombre', 'id']
 
-class instrumentoForm(forms.ModelForm):
-    class Meta:
-        model = Instrumento
-        exclude = ['created_by']
-
-@admin.register(Instrumento)
-class instrumentoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nombre', 'created_by', 'created_at']
-    form = instrumentoForm
-
-    def save_model(self, request, obj, form, change):
-        if not change:
-            obj.created_by = request.user
-        obj.save()
-
-@admin.register(InstrumentoValor)
-class instrumentoValorAdmin(admin.ModelAdmin):
-    list_display = ['pregunta', 'nombre_escala', 'nombre_item', 'valor']
-    list_filter = ['instrumento_item__pregunta']
-    ordering = ['instrumento_item__orden', 'id']
-
-class instrumentoItemForm(forms.ModelForm):
-    class Meta:
-        model = InstrumentoItem
-        exclude = ['created_by']
-
-@admin.register(InstrumentoItem)
-class instrumentoItemAdmin(admin.ModelAdmin):
-    list_display = ['orden', 'pregunta']
-    list_filter = ['instrumento']
-    ordering = ['orden']
-    form = instrumentoItemForm
-
-class aplicacionForm(forms.ModelForm):
-    class Meta:
-        model = Aplicacion
-        exclude = ['created_by']
-
-@admin.register(Aplicacion)
-class aplicacionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'created_at', 'created_by']
-    form = aplicacionForm
-    
-    def save_model(self, request, obj, form, change):
-        if not change:
-            obj.created_by = request.user
-        obj.save()
- 
+#class instrumentoForm(forms.ModelForm):
+#    class Meta:
+#        model = Instrumento
+#        exclude = ['created_by']
+#
+#@admin.register(Instrumento)
+#class instrumentoAdmin(admin.ModelAdmin):
+#    list_display = ['id', 'nombre', 'created_by', 'created_at']
+#    form = instrumentoForm
+#
+#    def save_model(self, request, obj, form, change):
+#        if not change:
+#            obj.created_by = request.user
+#        obj.save()
+#
+#@admin.register(InstrumentoValor)
+#class instrumentoValorAdmin(admin.ModelAdmin):
+#    list_display = ['pregunta', 'nombre_escala', 'nombre_item', 'valor']
+#    list_filter = ['instrumento_item__pregunta']
+#    ordering = ['instrumento_item__orden', 'id']
+#
+#class instrumentoItemForm(forms.ModelForm):
+#    class Meta:
+#        model = InstrumentoItem
+#        exclude = ['created_by']
+#
+#@admin.register(InstrumentoItem)
+#class instrumentoItemAdmin(admin.ModelAdmin):
+#    list_display = ['orden', 'pregunta']
+#    list_filter = ['instrumento']
+#    ordering = ['orden']
+#    form = instrumentoItemForm
+#
+#class aplicacionForm(forms.ModelForm):
+#    class Meta:
+#        model = Aplicacion
+#        exclude = ['created_by']
+#
+#@admin.register(Aplicacion)
+#class aplicacionAdmin(admin.ModelAdmin):
+#    list_display = ['id', 'created_at', 'created_by']
+#    form = aplicacionForm
+#    
+#    def save_model(self, request, obj, form, change):
+#        if not change:
+#            obj.created_by = request.user
+#        obj.save()
+# 
 #class aplicacionItemForm(forms.ModelForm):
 #    class Meta:
 #        model = AplicacionItem

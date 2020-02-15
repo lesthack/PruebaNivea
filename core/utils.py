@@ -25,17 +25,17 @@ def inserts_escalas():
         bastante = EscalaItem.objects.get_or_create(escala=escala_likert2, nombre='Bastante')
         muchisimo = EscalaItem.objects.get_or_create(escala=escala_likert2, nombre='Muchisimo')
 
-def inserts_categorias():
-    Categoria.objects.get_or_create(nombre='Apego a normas', orden=1)
-    Categoria.objects.get_or_create(nombre='Adaptabilidad', orden=2)
-    Categoria.objects.get_or_create(nombre='Trabajo en equipo', orden=3)
-    Categoria.objects.get_or_create(nombre='Honestidad', orden=4)
-    Categoria.objects.get_or_create(nombre='Impulsividad', orden=5)
-    Categoria.objects.get_or_create(nombre='Manejo de conflictos', orden=6)
-    Categoria.objects.get_or_create(nombre='Uso de sustancias', orden=7)
-    Categoria.objects.get_or_create(nombre='Violencia', orden=8)
-    Categoria.objects.get_or_create(nombre='Liderazgo negativo', orden=9)
-    Categoria.objects.get_or_create(nombre='Autocuidado', orden=10)
+def inserts_competencias():
+    Competencia.objects.get_or_create(nombre='Apego a normas', orden=1)
+    Competencia.objects.get_or_create(nombre='Adaptabilidad', orden=2)
+    Competencia.objects.get_or_create(nombre='Trabajo en equipo', orden=3)
+    Competencia.objects.get_or_create(nombre='Honestidad', orden=4)
+    Competencia.objects.get_or_create(nombre='Impulsividad', orden=5)
+    Competencia.objects.get_or_create(nombre='Manejo de conflictos', orden=6)
+    Competencia.objects.get_or_create(nombre='Uso de sustancias', orden=7)
+    Competencia.objects.get_or_create(nombre='Violencia', orden=8)
+    Competencia.objects.get_or_create(nombre='Liderazgo negativo', orden=9)
+    Competencia.objects.get_or_create(nombre='Autocuidado', orden=10)
 
 def inserts_localidades():
     Localidad.objects.get_or_create(nombre='Guanajuato')

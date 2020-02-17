@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.views.decorators.csrf import csrf_protect
+from django.core.exceptions import PermissionDenied
+from django.db import connection, transaction
+from django.utils.html import escape
 
-# Create your views here.
+def index(request):
+    return render(request, 'base.html', 
+        {}
+    )
+
+def test(request):
+    return HttpResponse("Hello, world. You're at the polls index.")

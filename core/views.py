@@ -5,8 +5,3 @@ from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import PermissionDenied
 from django.db import connection, transaction
 from django.utils.html import escape
-
-def test(request):
-    return render(request, 'base_custom.html', {
-        'user': request.user
-    })

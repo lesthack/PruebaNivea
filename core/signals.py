@@ -5,16 +5,16 @@ from django.dispatch import receiver
 from datetime import datetime
 from .models import *
 
-@receiver(post_save, sender=Aplicacion)
-def nueva_aplicacion(sender, instance, **kwargs):
+@receiver(post_save, sender=Evaluacion)
+def nueva_evaluacion(sender, instance, **kwargs):
     """
       Descripcion:
-        Cuando se crea una nueva aplicacion, se deben crear
-        los Items según el instrumento elegido
+        Cuando se crea una nueva evaluación,
+        se autogeneran las respuestas
     """
-    #for instrumento_item in InstrumentoItem.objects.filter(instrumento=instance.instrumento):
-    #    aplicacion_item = AplicacionItem(
-    #        aplicacion = instance,
-    #        item = instrumento_item,
-    #        created_by = instance.created_by
-    #    ).save()
+    for conducta_view in Conducta.objects.all():
+        EvaluacionRespuesta.objects.get_or_create(
+            evaluacion = instance,
+            conducta = conducta_view,
+            created_by = instance.created_by
+        )

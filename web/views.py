@@ -7,7 +7,7 @@ from django.db import connection, transaction
 from django.utils.html import escape
 
 def index(request):
-    return render(request, 'base.html', 
+    return render(request, 'base_site.html', 
         {}
     )
 

@@ -1,0 +1,42 @@
+{% extends "base_site.html" %}
+
+{% block title_page %}Evaluaciones{% endblock %}
+
+{% block content %}
+<div class="well">
+  <h4>Lista de evaluaciones registradas</h4>
+  <p>Esta es una lista de todas las evaluaciones registradas en el sistema.</p>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+        <th>ID</th>
+        <th>Creado</th>
+        <th>Persona</th>
+        <th>Edad</th>
+        <th>Sexo</th>
+        <th>Escolaridad</th>
+        <th>Estado Civíl</th>
+        <th>Localidad</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for evaluacion in evaluaciones %}
+    <tr>
+      <td>{{ evaluacion.id }}</td>
+      <td>{{ evaluacion.fecha }}</td>
+      <td>{{ evaluacion.nombre_persona }}</td>
+      <td>{{ evaluacion.edad }}</td>
+      <td>{{ evaluacion.get_sexo }}</td>
+      <td>{{ evaluacion.get_escolaridad }}</td>
+      <td>{{ evaluacion.get_estado_civil }}</td>
+      <td>{{ evaluacion.localidad }}</td>
+      <td>
+        <button type="button" class="btn btn-primary btn-circle"><i class="fa fa-folder-open"></i></button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

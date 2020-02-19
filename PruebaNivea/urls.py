@@ -12,6 +12,7 @@ admin.site.site_title = "Nivea"
 
 urlpatterns = [
     url(r'^$', site.admin_view(index)),
+    url(r'^evaluaciones/$', site.admin_view(evaluaciones)),
     url(r'^test/$', site.admin_view(test)),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

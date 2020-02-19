@@ -147,6 +147,18 @@ class Evaluacion(models.Model):
     def __str__(self):
         return 'Evaluacion {}'.format(self.id)
 
+    def get_sexo(self):
+        return '{}'.format(self.GENERO_CHOICES[self.sexo][1])
+
+    def get_escolaridad(self):
+        return '{}'.format(self.ESCOLARIDAD_CHOICES[self.escolaridad][1])
+
+    def get_estado_civil(self):
+        return '{}'.format(self.ESTADOCIVIL_CHOICES[self.estado_civil][1])
+
+    def get_numero_hijos(self):
+        return '{}'.format(self.NUMEROHIJOS_CHOICES[self.numero_hijos][1])
+
 class EvaluacionRespuesta(models.Model):
     evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
     conducta = models.ForeignKey(Conducta, on_delete=models.CASCADE)

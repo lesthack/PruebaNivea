@@ -21,6 +21,8 @@
         <link href="{% static "css/morris.css" %}" rel="stylesheet">
         <!-- Custom Fonts -->
         <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+        <!-- jQuery -->
+        <script src="{% static "js/jquery.min.js" %}"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -844,17 +846,13 @@
         </div>
         <!-- /#wrapper -->
 
-        <!-- jQuery -->
-        <script src="{% static "js/jquery.min.js" %}"></script>
         <!-- Bootstrap Core JavaScript -->
         <script src="{% static "js/bootstrap.min.js" %}"></script>
         <!-- Metis Menu Plugin JavaScript -->
         <script src="{% static "js/metisMenu.min.js" %}"></script>
+        <!-- Google Charts -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         {% block javascript %}
-        <!-- Morris Charts JavaScript -->
-        <script src="{% static "js/raphael.min.js" %}"></script>
-        <script src="{% static "js/morris.min.js" %}"></script>
-        <script src="{% static "js/morris-data.js" %}"></script>
         {% endblock %}
         <!-- Custom Theme JavaScript -->
         <script>

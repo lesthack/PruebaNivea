@@ -51,7 +51,14 @@ def evaluaciones(request):
 
 @login_required(login_url='/auth')
 def evaluacion(request, evaluacion_id):
-    return render(request, 'evaluacion.html',{})
+    try:
+        view_evaluacion = Evaluacion.objects.get(id=evaluacion_id)
+    except Evaluacion.DoesNotExist:
+        #agregar redirect a pagina que diga que no existe la eval
+        return HttpResponseRedirect('/evaluaciones/')
+    return render(request, 'evaluacion.html',{
+        'evaluacion': view_evaluacion
+    })
 
 @login_required(login_url='/auth')
 def test(request):

@@ -1,3 +1,89 @@
 {% extends "base_site.html" %}
 
-{% block title_page %}Evaluación 1{% endblock %}
+{% block title_page %}Evaluación :: {{ evaluacion.nombre_persona }}{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading">Datos Generales</div>
+  <div class="panel-body">
+    <div class="table-responsive table-bordered">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td width="150px"><b>ID</b></td>
+            <td>{{ evaluacion.id }}</td>
+          </tr>
+          <tr>
+            <td>Fecha</td>
+            <td>{{ evaluacion.fecha }}</td>
+          </tr>
+          <tr>
+            <td>Sexo</td>
+            <td>{{ evaluacion.get_sexo }}</td>
+          </tr>
+          <tr>
+            <td>Edad</td>
+            <td>{{ evaluacion.edad }} años</td>
+          </tr>
+          <tr>
+            <td>Estado Civíl</td>
+            <td>{{ evaluacion.get_estado_civil }}</td>
+          </tr>
+          <tr>
+            <td>Escolaridad</td>
+            <td>{{ evaluacion.get_escolaridad }}</td>
+          </tr>
+          <tr>
+            <td>Localidad</td>
+            <td>{{ evaluacion.localidad }}</td>
+          </tr>
+          <tr>
+            <td>Número de Hijos</td>
+            <td>{{ evaluacion.get_numero_hijos }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">Resultados</div>
+  <div class="panel-body">
+    <div id="chart_div"></div>
+    <script charset="utf-8">
+      $(function() {
+google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawMaterial);
+
+function drawMaterial() {
+      var data = google.visualization.arrayToDataTable([
+        ['Competencia', 'Resultado', { role: 'style' }],
+        ['Manejo de ConflictosA', 0, 'white'],
+        ['Apego a normas', 2, 'gold'],
+        ['Liderazgo Negativo', 2, 'gold'],
+        ['Violencia', 0, 'white'],
+        ['Riesgo Adictivo', 3, 'red'],
+        ['Control de Impulsos', 0, 'white'],
+        ['Cultura de autocuidado', 0, 'white'],
+        ['Adaptación y Trabajo en equipo', 0, 'white'],
+      ]);
+
+      var materialOptions = {
+        hAxis: {
+          title: 'Total',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'Competencia'
+        },
+        bars: 'horizontal'
+      };
+      var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
+      materialChart.draw(data, materialOptions);
+    }
+      });
+    </script>
+  </div>
+</div>
+{% endblock %}
+

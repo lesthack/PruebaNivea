@@ -33,7 +33,7 @@
       <td>{{ evaluacion.get_estado_civil }}</td>
       <td>{{ evaluacion.localidad }}</td>
       <td>
-        <button type="button" class="btn btn-primary btn-circle"><i class="fa fa-folder-open"></i></button>
+        <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle"><i class="fa fa-folder-open"></i></a>
       </td>
     </tr>
     {% endfor %}

@@ -118,6 +118,7 @@ def evaluacion_quiz(request, evaluacion_id):
             conducta__orden__lte=80
         )
     except Evaluacion.DoesNotExist:
+        print('No sen encontró la evaluacion')
         return HttpResponseRedirect('/evaluaciones/')
     return render(request, 'evaluacion_quiz.html', {
         'evaluacion': view_evaluacion,

@@ -163,19 +163,27 @@ class Evaluacion(models.Model):
     def get_calificacion(self, competencia=None):
         total = 0
         calificacion = {
-            'total': total
         }
-        if competencia is None:
+        if competencia:
+            pass
+        else:
             for r in self.get_respuestas():
                 total += r.respuesta
+            calificacion = {
+                'total': total
+            }
             if total >= 0 and total < 90:
                 calificacion['nivel'] = 'Apto'
+                calificacion['class'] = 'success'
             elif total >= 90 and total < 108:
                 calificacion['nivel'] = 'Apto Condicionado'
+                calificacion['class'] = 'warning'
             elif total >= 108:
                 calificacion['nivel'] = 'No Apto'
+                calificacion['class'] = 'danger'
             else:
                 calificacion['nivel'] = 'No calificado'
+                calificacion['class'] = ''
         return calificacion
     
     def get_respuestas(self):
@@ -189,11 +197,29 @@ class Evaluacion(models.Model):
         resultados = []
         for competencia in Competencia.objects.all().order_by('nombre'):
             try:
+                #total = respuestas.filter(conducta__competencia=competencia).values('conducta__competencia').annotate(total=Sum('respuesta'))[0]['total']
+                nivel = 'No Calificado'
+                clase = ''
+                total = 0
+                for r in respuestas.filter(conducta__competencia=competencia):
+                    if r.respuesta > 0: total += r.respuesta
+                if total >= competencia.apto_min and total <= competencia.apto_max:
+                    nivel = 'Apto'
+                    clase = 'success'
+                elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
+                    nivel = 'Apto Condicionado'
+                    clase = 'warning'
+                elif total >= competencia.no_apto_min:
+                    nivel = 'No Apto'
+                    clase = 'danger'
                 resultados.append({
                     'competencia': competencia.nombre,
-                    'total': respuestas.filter(conducta__competencia=competencia).values('conducta__competencia').annotate(total=Sum('respuesta'))[0]['total']
+                    'total': total,
+                    'nivel': nivel,
+                    'class': clase
                 })
             except Exception as e:
+                print('Error: {}'.format(e))
                 resultados[competencia.nombre] = 0
         return resultados
 

@@ -41,18 +41,35 @@
             <td>Número de Hijos</td>
             <td>{{ evaluacion.get_numero_hijos }}</td>
           </tr>
+        </tbody>
+      </table>
+      <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block">Cuestionario</a>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">Competencias</div>
+  <div class="panel-body">
+      <table class="table">
+        <tbody>
+          {% for resultado in evaluacion.get_resultados %}
+          <tr>
+            <td><b>{{ resultado.competencia|title }}</b></td>
+            <td class="{{ resultado.class }}">{{ resultado.total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
           <tr>
             <th>Total</th>
             <th>{{ evaluacion.get_calificacion.total }}</th>
           </tr>
-          <tr>
+          <tr class="{{ evaluacion.get_calificacion.class }}">
             <th>Nivel</th>
             <th>{{ evaluacion.get_calificacion.nivel }}</th>
           </tr>
-        </tbody>
+        </tfoot>
       </table>
-      <a href="/evaluaciones/e/2/q/" class="btn btn-default btn-block">Cuestionario</a>
-    </div>
   </div>
 </div>
 <div class="panel panel-default">

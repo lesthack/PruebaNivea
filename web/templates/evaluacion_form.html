@@ -1,0 +1,80 @@
+{% extends "base_site.html" %}
+{% block title_page %}
+{% if form.instance.pk %}
+  Editando Evaluación {{ form.instance.id }}
+{% else %}
+  Nueva Evaluación
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading">Datos Generales</div>
+  <div class="panel-body">
+    <form role="form" method="POST">
+      <div class="form-group">
+        <label class="control-label {% if form.nombre_persona.errors %}has-error{% endif %}">{{ form.nombre_persona.label }}</label>
+        {{ form.nombre_persona }}
+        {% for error in form.nombre_persona.errors %}
+        <small id="nombrepersonaHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+        <label class="control-label {% if form.fecha.errors %}has-error{% endif %}">{{ form.fecha.label }}</label>
+        {{ form.fecha }}
+        {% for error in form.fecha.errors %}
+        <small id="fechaHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.edad.errors %}has-error{% endif %}">
+        <label class="control-label">{{ form.edad.label }}</label>
+        {{ form.edad }}
+        {% for error in form.edad.errors %}
+        <small id="edadHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.sexo.errors %}has-error{% endif %}">
+        <label class="control-label">{{ form.sexo.label }}</label>
+        {{ form.sexo }}
+        {% for error in form.sexo.errors %}
+        <small id="sexoHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.estado_civil.errors %}has-error{% endif %}">
+        <label class="control-label">{{ form.estado_civil.label }}</label>
+        {{ form.estado_civil }}
+        {% for error in form.estado_civil.errors %}
+        <small id="estadocivilHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.escolaridad.errors %}has-error{% endif %}">
+        <label class="control-label">{{ form.escolaridad.label }}</label>
+        {{ form.escolaridad }}
+        {% for error in form.escolaridad.errors %}
+        <small id="escolaridadHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.localidad.errors %}has-error{% endif %}">
+        <label class="control-label">{{ form.localidad.label }}</label>
+        {{ form.localidad }}
+        {% for error in form.localidad.errors %}
+        <small id="localidadHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.numero_hijos.errors %}has-error{% endif %}">
+        <label class="control-label">{{ form.numero_hijos.label }}</label>
+        {{ form.numero_hijos }}
+        {% for error in form.numero_hijos.errors %}
+        <small id="numerohijosHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      {% csrf_token %}
+      {% if form.instance.pk %}
+        <button type="submit" class="btn btn-primary">Guardar y Siguiente</button>
+      {% else %}
+        <button type="submit" class="btn btn-primary">Siguiente</button>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endblock %}

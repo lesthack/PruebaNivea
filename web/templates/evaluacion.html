@@ -49,38 +49,33 @@
 <div class="panel panel-default">
   <div class="panel-heading">Resultados</div>
   <div class="panel-body">
-    <div id="chart_div"></div>
+    <div id="chart_div" style="width: 95%;"></div>
     <script charset="utf-8">
       $(function() {
-google.charts.load('current', {packages: ['corechart', 'bar']});
-google.charts.setOnLoadCallback(drawMaterial);
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawMaterial);
 
-function drawMaterial() {
-      var data = google.visualization.arrayToDataTable([
-        ['Competencia', 'Resultado', { role: 'style' }],
-        ['Manejo de ConflictosA', 0, 'white'],
-        ['Apego a normas', 2, 'gold'],
-        ['Liderazgo Negativo', 2, 'gold'],
-        ['Violencia', 0, 'white'],
-        ['Riesgo Adictivo', 3, 'red'],
-        ['Control de Impulsos', 0, 'white'],
-        ['Cultura de autocuidado', 0, 'white'],
-        ['Adaptación y Trabajo en equipo', 0, 'white'],
-      ]);
+        function drawMaterial() {
+          var data = google.visualization.arrayToDataTable([
+            ['Competencia', 'Resultado', { role: 'style' }],
+            {% for resultado in evaluacion.get_resultados %}
+            ['{{ resultado.competencia|title }}', {{ resultado.total }}, 'color: red'],
+            {% endfor %}
+          ]);
 
-      var materialOptions = {
-        hAxis: {
-          title: 'Total',
-          minValue: 0,
-        },
-        vAxis: {
-          title: 'Competencia'
-        },
-        bars: 'horizontal'
-      };
-      var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
-      materialChart.draw(data, materialOptions);
-    }
+          var materialOptions = {
+            hAxis: {
+              title: 'Total',
+              minValue: 0,
+            },
+            vAxis: {
+              title: 'Competencia'
+            },
+            bars: 'horizontal'
+          };
+          var chart = new google.charts.Bar(document.getElementById('chart_div'));
+          chart.draw(data, materialOptions);
+        }
       });
     </script>
   </div>

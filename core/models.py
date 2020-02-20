@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.html import format_html
+from django.db.models import Sum
 import datetime
 
 class Escala(models.Model):
@@ -159,6 +160,26 @@ class Evaluacion(models.Model):
     def get_numero_hijos(self):
         return '{}'.format(self.NUMEROHIJOS_CHOICES[self.numero_hijos][1])
 
+    def get_respuestas(self):
+        return EvaluacionRespuesta.objects.filter(evaluacion=self).order_by('conducta__orden')
+
+    def get_resultados(self):
+        """
+            Resultados generales por competencia
+        """
+        respuestas = self.get_respuestas()
+        resultados = []
+        for competencia in Competencia.objects.all().order_by('nombre'):
+            try:
+                resultados.append({
+                    'competencia': competencia.nombre,
+                    'total': respuestas.filter(conducta__competencia=competencia).values('conducta__competencia').annotate(total=Sum('respuesta'))[0]['total']
+                })
+            except Exception as e:
+                resultados[competencia.nombre] = 0
+        return resultados
+
+
 class EvaluacionRespuesta(models.Model):
     evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
     conducta = models.ForeignKey(Conducta, on_delete=models.CASCADE)
@@ -169,3 +190,6 @@ class EvaluacionRespuesta(models.Model):
 
     def __str__(self):
         return '{}'.format(self.respuesta) 
+
+    def get_conducta_valores(self):
+        return ConductaValor.objects.filter(conducta=self.conducta)

@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import connection, transaction
 from django.utils.html import escape
 from core.models import *
+from core.forms import *
 
 @csrf_protect
 def auth(request, incognito=False):
@@ -32,7 +33,7 @@ def auth(request, incognito=False):
         message = u'El usuario no se encuentra activo.'
     else:
       message = u'Usuario y/o contraseña incorrectos'
-  print(message)
+
   return render(request, 'login.html', {
         'message': message
     }
@@ -50,14 +51,71 @@ def evaluaciones(request):
     })
 
 @login_required(login_url='/auth')
-def evaluacion(request, evaluacion_id):
+def evaluacion_view(request, evaluacion_id):
     try:
         view_evaluacion = Evaluacion.objects.get(id=evaluacion_id)
     except Evaluacion.DoesNotExist:
         #agregar redirect a pagina que diga que no existe la eval
         return HttpResponseRedirect('/evaluaciones/')
     return render(request, 'evaluacion.html',{
-        'evaluacion': view_evaluacion
+        'evaluacion': view_evaluacion,
+    })
+
+@login_required(login_url='/auth')
+def evaluacion_new(request):
+    if request.method == 'POST':
+        form_evaluacion = evaluacionForm(request.user, request.POST)
+        if form_evaluacion.is_valid():
+            new_evaluacion = form_evaluacion.save(commit=False)
+            new_evaluacion.created_by = request.user
+            new_evaluacion.save()
+            return HttpResponseRedirect('/evaluaciones/e/{}/q/'.format(new_evaluacion.id))
+    else:
+        form_evaluacion = evaluacionForm(request.user)
+    return render(request, 'evaluacion_form.html', {
+        'form': form_evaluacion
+    })
+
+@login_required(login_url='/auth')
+def evaluacion_edit(request, evaluacion_id):
+    try:
+        view_evaluacion = Evaluacion.objects.get(id=evaluacion_id)
+        if request.method == 'POST':
+            form_evaluacion = evaluacionForm(request.user, request.POST, instance=view_evaluacion)
+            if form_evaluacion.is_valid():
+                view_evaluacion = form_evaluacion.save()
+        else:
+            form_evaluacion = evaluacionForm(request.user, instance=view_evaluacion)
+    except Evaluacion.DoesNotExist:
+        #agregar redirect a pagina que diga que no existe la eval
+        return HttpResponseRedirect('/evaluaciones/')
+    return render(request, 'evaluacion_form.html', {
+        'form': form_evaluacion
+    })
+
+@login_required(login_url='/auth')
+def evaluacion_quiz(request, evaluacion_id):
+    try:
+        view_evaluacion = Evaluacion.objects.get(id=evaluacion_id)
+        list_respuestas_1 = view_evaluacion.get_respuestas().filter(
+            conducta__orden__gte=1, 
+            conducta__orden__lte=38
+        )
+        list_respuestas_2 = view_evaluacion.get_respuestas().filter(
+            conducta__orden__gte=39,
+            conducta__orden__lte=61
+        )
+        list_respuestas_3 = view_evaluacion.get_respuestas().filter(
+            conducta__orden__gte=62,
+            conducta__orden__lte=80
+        )
+    except Evaluacion.DoesNotExist:
+        return HttpResponseRedirect('/evaluaciones/')
+    return render(request, 'evaluacion_quiz.html', {
+        'evaluacion': view_evaluacion,
+        'respuestas1': list_respuestas_1,
+        'respuestas2': list_respuestas_2,
+        'respuestas3': list_respuestas_3,
     })
 
 @login_required(login_url='/auth')

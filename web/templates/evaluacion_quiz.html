@@ -1,0 +1,99 @@
+{% extends "base_site.html" %}
+{% block title_page %}Encuesta{% endblock %}
+
+{% block content %}
+<form role="form" method="POST" style="margin-bottom: 100px;">
+  <div class="panel panel-default">
+    <div class="panel-heading">Preguntas Parte1</div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+              <th>ID</th>
+              <th>Pregunta</th>
+              <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for respuesta in respuestas1 %}
+          <tr>
+            <td><small>{{ respuesta.conducta.orden }}</small></td>
+            <td><small>{{ respuesta.conducta.pregunta }}</small></td>
+            <td>
+              {% for valor in respuesta.get_conducta_valores %}
+                <label class="radio-inline">
+                  <input type="radio" name="respuesta_{{ respuesta.id }}" id="conducta_valor_{{ valor.id }}" value="{{ valor.valor }}" {% if valor.valor == respuesta.respuesta %}checked{% endif %}/>
+                  <small>{{ valor.nombre_item }}</small>
+                </label>
+              {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Preguntas Parte2</div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+              <th>ID</th>
+              <th>Pregunta</th>
+              <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for respuesta in respuestas2 %}
+          <tr>
+            <td><small>{{ respuesta.conducta.orden }}</small></td>
+            <td><small>{{ respuesta.conducta.pregunta }}</small></td>
+            <td>
+              {% for valor in respuesta.get_conducta_valores %}
+                <label class="radio-inline">
+                  <input type="radio" name="respuesta_{{ respuesta.id }}" id="conducta_valor_{{ valor.id }}" value="{{ valor.valor }}" {% if valor.valor == respuesta.respuesta %}checked{% endif %}/>
+                  <small>{{ valor.nombre_item }}</small>
+                </label>
+              {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Preguntas Parte3</div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+              <th>ID</th>
+              <th>Pregunta</th>
+              <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for respuesta in respuestas3 %}
+          <tr>
+            <td><small>{{ respuesta.conducta.orden }}</small></td>
+            <td><small>{{ respuesta.conducta.pregunta }}</small></td>
+            <td>
+              {% for valor in respuesta.get_conducta_valores %}
+                <label class="radio-inline">
+                  <input type="radio" name="respuesta_{{ respuesta.id }}" id="conducta_valor_{{ valor.id }}" value="{{ valor.valor }}" {% if valor.valor == respuesta.respuesta %}checked{% endif %}/>
+                  <small>{{ valor.nombre_item }}</small>
+                </label>
+              {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}

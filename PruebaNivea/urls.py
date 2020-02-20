@@ -13,8 +13,11 @@ admin.site.site_title = "Nivea"
 urlpatterns = [
     url(r'^$', index),
     url(r'^auth/$', auth),
-    url(r'^evaluaciones/$', site.admin_view(evaluaciones)),
-    url(r'^evaluaciones/v/(?P<evaluacion_id>\d+)/$', site.admin_view(evaluacion)),
+    url(r'^evaluaciones/$', evaluaciones),
+    url(r'^evaluaciones/v/(?P<evaluacion_id>\d+)/$', evaluacion_view),
+    url(r'^evaluaciones/e/(?P<evaluacion_id>\d+)/$', evaluacion_edit),
+    url(r'^evaluaciones/e/(?P<evaluacion_id>\d+)/q/$', evaluacion_quiz),
+    url(r'^evaluaciones/n/$', evaluacion_new),
     url(r'^test/$', site.admin_view(test)),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

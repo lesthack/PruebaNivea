@@ -16,7 +16,6 @@
         <th>Edad</th>
         <th>Sexo</th>
         <th>Escolaridad</th>
-        <th>Estado Civíl</th>
         <th>Localidad</th>
         <th></th>
     </tr>
@@ -30,10 +29,10 @@
       <td>{{ evaluacion.edad }}</td>
       <td>{{ evaluacion.get_sexo }}</td>
       <td>{{ evaluacion.get_escolaridad }}</td>
-      <td>{{ evaluacion.get_estado_civil }}</td>
       <td>{{ evaluacion.localidad }}</td>
       <td>
         <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle"><i class="fa fa-folder-open"></i></a>
+        <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle"><i class="fa fa-edit"></i></a>
       </td>
     </tr>
     {% endfor %}

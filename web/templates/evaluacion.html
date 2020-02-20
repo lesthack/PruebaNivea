@@ -1,5 +1,6 @@
 {% extends "base_site.html" %}
 
+{% block page_title %}Evaliación {{ evaluacion.nombre_persona }}{% endblock %}
 {% block title %}Evaluaciones{% endblock %}
 {% block title_page %}{{ evaluacion.nombre_persona }}{% endblock %}
 
@@ -44,7 +45,7 @@
           </tr>
         </tbody>
       </table>
-      <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-default btn-block">Editar</a>
+      <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-default btn-block noprint">Editar</a>
     </div>
   </div>
 </div>
@@ -55,8 +56,8 @@
         <tbody>
           {% for resultado in evaluacion.get_resultados %}
           <tr>
-            <td><b>{{ resultado.competencia|title }}</b></td>
-            <td class="{{ resultado.class }}">{{ resultado.total }}</td>
+            <td>{{ resultado.competencia|title }}</td>
+            <td class="{{ resultado.class }}"><b>{{ resultado.total }}</b></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -71,10 +72,10 @@
           </tr>
         </tfoot>
       </table>
-      <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block">Cuestionario</a>
+      <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block noprint">Cuestionario</a>
   </div>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-default new_page">
   <div class="panel-heading">Resultados</div>
   <div class="panel-body">
     <canvas id="myChart"></canvas>
@@ -86,7 +87,7 @@
       var r_colors = [];
 
       {% for resultado in evaluacion.get_resultados %}
-      r_lables.push('{{ resultado.competencia|title }}');
+      r_lables.push('{{ resultado.competencia.nombre|title }}');
       r_data.push({{ resultado.total }});
       r_colors.push({% if resultado.class == 'success' %}'#d4edda'{% elif resultado.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
       {% endfor %} 
@@ -114,6 +115,46 @@
     </script>
   </div>
 </div>
-<a href="/evaluaciones/" class="btn btn-default">Regresar</a>
+<div class="panel panel-default">
+  <div class="panel-heading">Observaciones</div>
+  <div class="panel-body">
+      <table class="table">
+        <tbody>
+          {% for resultado in evaluacion.get_resultados %}
+            {% if resultado.nivel != 'No Apto' %}
+            <tr>
+              <td>
+                <h3 class="competencia_title">{{ resultado.competencia.nombre|title }}</h3>
+                <div class="competencia_description">
+                  <h4>Descripción</h4>
+                  <p class="competencia_text">{{ resultado.competencia.descripcion }}</p>
+                </div>
+                {% if resultado.nivel == 'Apto' %}
+                <div class="competencia_description">
+                  <h4>Apto</h4>
+                  <p class="competencia_text">{{ resultado.competencia.apto }}</p>
+                </div>
+                {% endif %}
+                {% if resultado.nivel == 'Apto Condicionado' %}
+                <div class="competencia_description">
+                  <h4>Apto Condicionado</h4>
+                  <p class="competencia_text">{{ resultado.competencia.apto_condicionado }}</p>
+                </div>
+                {% endif %}
+                {% if resultado.nivel == 'No Apto' %}
+                <div class="competencia_description">
+                  <h4>No Apto</h4>
+                  <p class="competencia_text">{{ resultado.competencia.no_apto }}</p>
+                </div>
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+<a href="/evaluaciones/" class="btn btn-default noprint">Regresar</a>
 {% endblock %}
 

@@ -216,7 +216,7 @@ class Evaluacion(models.Model):
                     nivel = 'No Apto'
                     clase = 'danger'
                 resultados.append({
-                    'competencia': competencia.nombre,
+                    'competencia': competencia,
                     'total': total,
                     'nivel': nivel,
                     'class': clase

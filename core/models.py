@@ -150,6 +150,9 @@ class Evaluacion(models.Model):
 
     def get_sexo(self):
         return '{}'.format(self.GENERO_CHOICES[self.sexo][1])
+    
+    def get_sexo_abr(self):
+        return '{}'.format(self.GENERO_CHOICES[self.sexo][1][0])
 
     def get_escolaridad(self):
         return '{}'.format(self.ESCOLARIDAD_CHOICES[self.escolaridad][1])

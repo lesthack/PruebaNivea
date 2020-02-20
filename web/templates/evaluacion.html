@@ -1,5 +1,6 @@
 {% extends "base_site.html" %}
 
+{% block title %}Evaluaciones{% endblock %}
 {% block title_page %}{{ evaluacion.nombre_persona }}{% endblock %}
 
 {% block content %}
@@ -43,7 +44,7 @@
           </tr>
         </tbody>
       </table>
-      <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block">Cuestionario</a>
+      <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-default btn-block">Editar</a>
     </div>
   </div>
 </div>
@@ -70,38 +71,45 @@
           </tr>
         </tfoot>
       </table>
+      <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block">Cuestionario</a>
   </div>
 </div>
 <div class="panel panel-default">
   <div class="panel-heading">Resultados</div>
   <div class="panel-body">
-    <div id="chart_div" style="width: 95%;"></div>
+    <canvas id="myChart"></canvas>
     <script charset="utf-8">
-      $(function() {
-        google.charts.load('current', {packages: ['corechart', 'bar']});
-        google.charts.setOnLoadCallback(drawMaterial);
+      var ctx = document.getElementById('myChart').getContext('2d');
 
-        function drawMaterial() {
-          var data = google.visualization.arrayToDataTable([
-            ['Competencia', 'Resultado', { role: 'style' }],
-            {% for resultado in evaluacion.get_resultados %}
-            ['{{ resultado.competencia|title }}', {{ resultado.total }}, 'color: red'],
-            {% endfor %}
-          ]);
+      var r_lables = [];
+      var r_data = [];
+      var r_colors = [];
 
-          var materialOptions = {
-            hAxis: {
-              title: 'Total',
-              minValue: 0,
-            },
-            vAxis: {
-              title: 'Competencia'
-            },
-            bars: 'horizontal'
-          };
-          var chart = new google.charts.Bar(document.getElementById('chart_div'));
-          chart.draw(data, materialOptions);
-        }
+      {% for resultado in evaluacion.get_resultados %}
+      r_lables.push('{{ resultado.competencia|title }}');
+      r_data.push({{ resultado.total }});
+      r_colors.push({% if resultado.class == 'success' %}'#d4edda'{% elif resultado.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
+      {% endfor %} 
+
+      var myChart = new Chart(ctx, {
+          type: 'horizontalBar',
+          data: {
+              labels: r_lables,
+              datasets: [{
+                  label: 'Totales',
+                  data: r_data,
+                  backgroundColor: r_colors
+              }]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  }]
+              }
+          }
       });
     </script>
   </div>

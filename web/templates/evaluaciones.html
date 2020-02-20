@@ -1,13 +1,32 @@
 {% extends "base_site.html" %}
 
+{% block title %}Evaluaciones{% endblock %}
 {% block title_page %}Evaluaciones{% endblock %}
 
 {% block content %}
-<div class="well">
+<div class="well noprint">
   <h4>Lista de evaluaciones registradas</h4>
   <p>Esta es una lista de todas las evaluaciones registradas en el sistema.</p>
 </div>
-<table class="table table-striped">
+<style>
+th.rotated-text {
+    height: 140px;
+    white-space: nowrap;
+    padding: 0 !important;
+}
+
+th.rotated-text > div {
+    transform:
+        translate(13px, 0px)
+        rotate(310deg);
+    width: 30px;
+}
+
+th.rotated-text > div > span {
+    padding: 5px 10px;
+}
+</style>
+<table class="table table-sm table-striped table-hover" style="margin-top: 50px;">
   <thead>
     <tr>
         <th>ID</th>
@@ -17,6 +36,10 @@
         <th>Sexo</th>
         <th>Escolaridad</th>
         <th>Localidad</th>
+        {% for competencia in competencias %}
+        <th class="rotated-text" scope="col"><div><span>{{ competencia.nombre|title }}</span></div></th>
+        {% endfor %}
+        <th class="rotated-text" scope="col"><div><span>Total</span></div></th>
         <th></th>
     </tr>
   </thead>
@@ -27,12 +50,17 @@
       <td>{{ evaluacion.fecha }}</td>
       <td>{{ evaluacion.nombre_persona }}</td>
       <td>{{ evaluacion.edad }}</td>
-      <td>{{ evaluacion.get_sexo }}</td>
+      <td>{{ evaluacion.get_sexo_abr }}</td>
       <td>{{ evaluacion.get_escolaridad }}</td>
       <td>{{ evaluacion.localidad }}</td>
+      {% for resultado in evaluacion.get_resultados %}
+      <td class="{{ resultado.class }}">{{ resultado.total }}</td>
+      {% endfor %}
+      <td class="{{ evaluacion.get_calificacion.class }}">{{ evaluacion.get_calificacion.total }}</td>
       <td>
-        <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle"><i class="fa fa-folder-open"></i></a>
-        <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle"><i class="fa fa-edit"></i></a>
+        <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-folder-open"></i></a>
+        <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a>
+        <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
       </td>
     </tr>
     {% endfor %}

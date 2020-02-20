@@ -40,14 +40,21 @@ def auth(request, incognito=False):
 )
 
 @login_required(login_url='/auth')
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
+@login_required(login_url='/auth')
 def index(request):
     return render(request, 'base_site.html', {})
 
 @login_required(login_url='/auth')
 def evaluaciones(request):
     list_evaluaciones = Evaluacion.objects.all().order_by('-created_at')
+    list_competencias = Competencia.objects.all().order_by('nombre')
     return render(request, 'evaluaciones.html', {
-        'evaluaciones': list_evaluaciones
+        'evaluaciones': list_evaluaciones,
+        'competencias': list_competencias
     })
 
 @login_required(login_url='/auth')

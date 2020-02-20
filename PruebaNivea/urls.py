@@ -13,6 +13,7 @@ admin.site.site_title = "Nivea"
 urlpatterns = [
     url(r'^$', index),
     url(r'^auth/$', auth),
+    url(r'^logout/$', logout_user),
     url(r'^evaluaciones/$', evaluaciones),
     url(r'^evaluaciones/v/(?P<evaluacion_id>\d+)/$', evaluacion_view),
     url(r'^evaluaciones/e/(?P<evaluacion_id>\d+)/$', evaluacion_edit),

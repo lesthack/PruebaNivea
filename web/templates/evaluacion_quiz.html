@@ -1,12 +1,18 @@
 {% extends "base_site.html" %}
-{% block title_page %}Encuesta {{ evaluacion.nombre_persona }}{% endblock %}
+
+{% block title %}Evaluaciones{% endblock %}
+{% block title_page %}Encuesta {{ evaluacion.id }}: {{ evaluacion.nombre_persona }}{% endblock %}
 
 {% block content %}
 <form role="form" method="POST" style="margin-bottom: 100px;">
   <div class="panel panel-default">
     <div class="panel-heading">Preguntas Parte1</div>
     <div class="panel-body">
-      <table class="table table-striped">
+      <div class="well">
+        <h4>Instrucciones</h4>
+        <p>Marca con una X lo respuesta con la que te identifiques</p>
+      </div>
+      <table class="table table-striped" style="font-family: Arial;">
         <thead>
           <tr>
               <th>ID</th>
@@ -36,7 +42,11 @@
   <div class="panel panel-default">
     <div class="panel-heading">Preguntas Parte2</div>
     <div class="panel-body">
-      <table class="table table-striped">
+      <div class="well">
+        <h4>Instrucciones</h4>
+        <p>Por favor responde a estas preguntas de acuerdo con lo que te sucedía cuando estabas en primaria (6 a 12 años)</p>
+      </div>
+      <table class="table table-striped" style="font-family: Arial;">
         <thead>
           <tr>
               <th>ID</th>
@@ -66,7 +76,11 @@
   <div class="panel panel-default">
     <div class="panel-heading">Preguntas Parte3</div>
     <div class="panel-body">
-      <table class="table table-striped">
+      <div class="well">
+        <h4>Instrucciones</h4>
+        <p>A continuación, encontraras una lista de situaciones que pasan en los trabajos, por favor marca si te llegó a suceder en tu anterior trabajo (si este es tu primer trabajo entonces responde conforme a lo que te sucedió durante el último año escolar que cursaste)</p>
+      </div>
+      <table class="table table-striped" style="font-family: Arial;">
         <thead>
           <tr>
               <th>ID</th>
@@ -94,7 +108,7 @@
     </div>
   </div>
   {% csrf_token %}
-  <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-default">Regresar</a>
+  <a href="javascript:history.go(-1);" class="btn btn-default">Regresar</a>
   <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 {% endblock %}

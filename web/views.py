@@ -84,6 +84,7 @@ def evaluacion_edit(request, evaluacion_id):
             form_evaluacion = evaluacionForm(request.user, request.POST, instance=view_evaluacion)
             if form_evaluacion.is_valid():
                 view_evaluacion = form_evaluacion.save()
+                return HttpResponseRedirect('/evaluaciones/e/{}/q/'.format(view_evaluacion.id))
         else:
             form_evaluacion = evaluacionForm(request.user, instance=view_evaluacion)
     except Evaluacion.DoesNotExist:
@@ -97,6 +98,13 @@ def evaluacion_edit(request, evaluacion_id):
 def evaluacion_quiz(request, evaluacion_id):
     try:
         view_evaluacion = Evaluacion.objects.get(id=evaluacion_id)
+        if request.method == 'POST':
+            for r in request.POST:
+                if 'respuesta_' in r:
+                    respuesta_id = int(r[10:])
+                    view_respuesta = EvaluacionRespuesta.objects.get(id=respuesta_id)
+                    view_respuesta.respuesta = int(request.POST[r])
+                    view_respuesta.save()
         list_respuestas_1 = view_evaluacion.get_respuestas().filter(
             conducta__orden__gte=1, 
             conducta__orden__lte=38

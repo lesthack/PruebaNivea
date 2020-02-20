@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% block title_page %}Evaluación :: {{ evaluacion.nombre_persona }}{% endblock %}
+{% block title_page %}{{ evaluacion.nombre_persona }}{% endblock %}
 
 {% block content %}
 <div class="panel panel-default">
@@ -41,8 +41,17 @@
             <td>Número de Hijos</td>
             <td>{{ evaluacion.get_numero_hijos }}</td>
           </tr>
+          <tr>
+            <th>Total</th>
+            <th>{{ evaluacion.get_calificacion.total }}</th>
+          </tr>
+          <tr>
+            <th>Nivel</th>
+            <th>{{ evaluacion.get_calificacion.nivel }}</th>
+          </tr>
         </tbody>
       </table>
+      <a href="/evaluaciones/e/2/q/" class="btn btn-default btn-block">Cuestionario</a>
     </div>
   </div>
 </div>
@@ -80,5 +89,6 @@
     </script>
   </div>
 </div>
+<a href="/evaluaciones/" class="btn btn-default">Regresar</a>
 {% endblock %}
 

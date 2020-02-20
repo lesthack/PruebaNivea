@@ -160,6 +160,24 @@ class Evaluacion(models.Model):
     def get_numero_hijos(self):
         return '{}'.format(self.NUMEROHIJOS_CHOICES[self.numero_hijos][1])
 
+    def get_calificacion(self, competencia=None):
+        total = 0
+        calificacion = {
+            'total': total
+        }
+        if competencia is None:
+            for r in self.get_respuestas():
+                total += r.respuesta
+            if total >= 0 and total < 90:
+                calificacion['nivel'] = 'Apto'
+            elif total >= 90 and total < 108:
+                calificacion['nivel'] = 'Apto Condicionado'
+            elif total >= 108:
+                calificacion['nivel'] = 'No Apto'
+            else:
+                calificacion['nivel'] = 'No calificado'
+        return calificacion
+    
     def get_respuestas(self):
         return EvaluacionRespuesta.objects.filter(evaluacion=self).order_by('conducta__orden')
 
@@ -178,7 +196,6 @@ class Evaluacion(models.Model):
             except Exception as e:
                 resultados[competencia.nombre] = 0
         return resultados
-
 
 class EvaluacionRespuesta(models.Model):
     evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)

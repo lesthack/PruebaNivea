@@ -1,5 +1,5 @@
 {% extends "base_site.html" %}
-{% block title_page %}Encuesta{% endblock %}
+{% block title_page %}Encuesta {{ evaluacion.nombre_persona }}{% endblock %}
 
 {% block content %}
 <form role="form" method="POST" style="margin-bottom: 100px;">
@@ -22,7 +22,7 @@
             <td>
               {% for valor in respuesta.get_conducta_valores %}
                 <label class="radio-inline">
-                  <input type="radio" name="respuesta_{{ respuesta.id }}" id="conducta_valor_{{ valor.id }}" value="{{ valor.valor }}" {% if valor.valor == respuesta.respuesta %}checked{% endif %}/>
+                  <input type="radio" name="respuesta_{{ respuesta.id }}" id="conducta_valor_{{ valor.id }}" value="{{ valor.valor }}" required {% if valor.valor == respuesta.respuesta %}checked{% endif %}/>
                   <small>{{ valor.nombre_item }}</small>
                 </label>
               {% endfor %}
@@ -94,6 +94,7 @@
     </div>
   </div>
   {% csrf_token %}
+  <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-default">Regresar</a>
   <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 {% endblock %}

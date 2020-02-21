@@ -171,7 +171,7 @@ class Evaluacion(models.Model):
             pass
         else:
             for r in self.get_respuestas():
-                total += r.respuesta
+                if r.respuesta > 0: total += r.respuesta
             calificacion = {
                 'total': total
             }
@@ -202,23 +202,33 @@ class Evaluacion(models.Model):
             try:
                 #total = respuestas.filter(conducta__competencia=competencia).values('conducta__competencia').annotate(total=Sum('respuesta'))[0]['total']
                 nivel = 'No Calificado'
+                nivel_n = 3                
                 clase = ''
                 total = 0
                 for r in respuestas.filter(conducta__competencia=competencia):
                     if r.respuesta > 0: total += r.respuesta
                 if total >= competencia.apto_min and total <= competencia.apto_max:
                     nivel = 'Apto'
+                    nivel_n = 0
                     clase = 'success'
                 elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
                     nivel = 'Apto Condicionado'
+                    nivel_n = 2
                     clase = 'warning'
                 elif total >= competencia.no_apto_min:
                     nivel = 'No Apto'
+                    nivel_n = 3
                     clase = 'danger'
+                if total > 0:
+                    porciento = total / 80
+                else:
+                    porciento = 0
                 resultados.append({
                     'competencia': competencia,
                     'total': total,
                     'nivel': nivel,
+                    'nivel_n': nivel_n,
+                    'porciento': int(porciento * 100),
                     'class': clase
                 })
             except Exception as e:

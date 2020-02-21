@@ -91,7 +91,7 @@
 
       {% for resultado in evaluacion.get_resultados %}
       r_lables.push('{{ resultado.competencia.nombre|title }}');
-      r_data.push({{ resultado.total }});
+      r_data.push({{ resultado.nivel_n }});
       r_colors.push({% if resultado.class == 'success' %}'#d4edda'{% elif resultado.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
       {% endfor %} 
 
@@ -100,18 +100,31 @@
           data: {
               labels: r_lables,
               datasets: [{
-                  label: 'Total',
-                  data: r_data,
-                  backgroundColor: r_colors
+                label: 'Total',
+                data: r_data,
+                backgroundColor: r_colors
               }]
           },
           options: {
               scales: {
-                  yAxes: [{
-                      ticks: {
-                          beginAtZero: true
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              },
+              animation: {
+                onComplete: function(){
+                  var ctx = this.chart.ctx;
+                  this.data.datasets.forEach(function (dataset){
+                    for (var i = 0; i < dataset.data.length; i++) {
+                      for(var key in dataset._meta){
+                        var model = dataset._meta[key].data[i]._model;
+                        ctx.fillText(" " + dataset.data[i], model.x, model.y - 5);
                       }
-                  }]
+                    }
+                  });
+                }
               }
           }
       });

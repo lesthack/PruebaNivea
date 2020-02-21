@@ -3,6 +3,36 @@
 {% block title %}Evaluaciones{% endblock %}
 {% block title_page %}Evaluaciones{% endblock %}
 
+{% block content_head %}
+{% comment %}
+  <div class="row">
+    <div class="col-lg-3 col-md-6">
+      <div class="panel panel-nivea">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="fa fa-tasks fa-5x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">{{ numero_evaluaciones }}</div>
+              <div>Evaluaciones registradas</div>
+            </div>
+        </div>
+        </div>
+        <a href="#list_evaluaciones">
+          <div class="panel-footer">
+            <span class="pull-left">View Details</span>
+            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="clearfix"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- /.row -->
+{% endcomment %}
+{% endblock %}
+
 {% block content %}
 <div class="well noprint">
   <h4>Lista de evaluaciones registradas</h4>
@@ -26,45 +56,47 @@ th.rotated-text > div > span {
     padding: 5px 10px;
 }
 </style>
-<table class="table table-sm table-striped table-hover" style="margin-top: 50px;">
-  <thead>
-    <tr>
-        <th>ID</th>
-        <th>Creado</th>
-        <th>Persona</th>
-        <th>Edad</th>
-        <th>Sexo</th>
-        <th>Escolaridad</th>
-        <th>Localidad</th>
-        {% for competencia in competencias %}
-        <th class="rotated-text" scope="col"><div><span>{{ competencia.nombre|title }}</span></div></th>
+<div id="list_evaluaciones">
+  <table class="table table-sm table-striped table-hover" style="margin-top: 50px;">
+    <thead>
+      <tr>
+          <th>ID</th>
+          <th>Creado</th>
+          <th>Persona</th>
+          <th>Edad</th>
+          <th>Sexo</th>
+          <th>Escolaridad</th>
+          <th>Localidad</th>
+          {% for competencia in competencias %}
+          <th class="rotated-text" scope="col"><div><span>{{ competencia.nombre|title }}</span></div></th>
+          {% endfor %}
+          <th class="rotated-text" scope="col"><div><span>Total</span></div></th>
+          <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for evaluacion in evaluaciones %}
+      <tr>
+        <td>{{ evaluacion.id }}</td>
+        <td>{{ evaluacion.fecha }}</td>
+        <td>{{ evaluacion.nombre_persona }}</td>
+        <td>{{ evaluacion.edad }}</td>
+        <td>{{ evaluacion.get_sexo_abr }}</td>
+        <td>{{ evaluacion.get_escolaridad }}</td>
+        <td>{{ evaluacion.localidad }}</td>
+        {% for resultado in evaluacion.get_resultados %}
+        <td class="{{ resultado.class }}">{{ resultado.total }}</td>
         {% endfor %}
-        <th class="rotated-text" scope="col"><div><span>Total</span></div></th>
-        <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for evaluacion in evaluaciones %}
-    <tr>
-      <td>{{ evaluacion.id }}</td>
-      <td>{{ evaluacion.fecha }}</td>
-      <td>{{ evaluacion.nombre_persona }}</td>
-      <td>{{ evaluacion.edad }}</td>
-      <td>{{ evaluacion.get_sexo_abr }}</td>
-      <td>{{ evaluacion.get_escolaridad }}</td>
-      <td>{{ evaluacion.localidad }}</td>
-      {% for resultado in evaluacion.get_resultados %}
-      <td class="{{ resultado.class }}">{{ resultado.total }}</td>
+        <td class="{{ evaluacion.get_calificacion.class }}">{{ evaluacion.get_calificacion.total }}</td>
+        <td>
+          <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-folder-open"></i></a>
+          <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a>
+          <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
+          <a href="/evaluaciones/d/{{ evaluacion.id }}/" onclick="return confirm('¿Estás seguro de eliminar este elemento?');" class="btn btn-danger btn-circle noprint"><i class="fa fa-remove"></i></a>
+        </td>
+      </tr>
       {% endfor %}
-      <td class="{{ evaluacion.get_calificacion.class }}">{{ evaluacion.get_calificacion.total }}</td>
-      <td>
-        <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-folder-open"></i></a>
-        <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a>
-        <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
-        <a href="/evaluaciones/d/{{ evaluacion.id }}/" onclick="return confirm('¿Estás seguro de eliminar este elemento?');" class="btn btn-danger btn-circle noprint"><i class="fa fa-remove"></i></a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 {% endblock %}

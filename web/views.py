@@ -46,7 +46,7 @@ def logout_user(request):
 
 @login_required(login_url='/auth')
 def index(request):
-    return render(request, 'base_site.html', {})
+    return HttpResponseRedirect('/evaluaciones/')
 
 @login_required(login_url='/auth')
 def evaluaciones(request):

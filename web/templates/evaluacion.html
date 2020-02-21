@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% block page_title %}Evaliación {{ evaluacion.nombre_persona }}{% endblock %}
+{% block page_title %}Evaluación {{ evaluacion.nombre_persona }}{% endblock %}
 {% block title %}Evaluaciones{% endblock %}
 {% block title_page %}{{ evaluacion.nombre_persona }}{% endblock %}
 
@@ -49,6 +49,7 @@
     </div>
   </div>
 </div>
+{% comment %}
 <div class="panel panel-default">
   <div class="panel-heading">Competencias</div>
   <div class="panel-body">
@@ -75,10 +76,12 @@
       <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block noprint">Cuestionario</a>
   </div>
 </div>
-<div class="panel panel-default new_page">
+{% endcomment %}
+<div class="panel panel-default">
   <div class="panel-heading">Resultados</div>
   <div class="panel-body">
     <canvas id="myChart"></canvas>
+    <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-default btn-block noprint">Cuestionario</a>
     <script charset="utf-8">
       var ctx = document.getElementById('myChart').getContext('2d');
 
@@ -97,7 +100,7 @@
           data: {
               labels: r_lables,
               datasets: [{
-                  label: 'Totales',
+                  label: 'Total',
                   data: r_data,
                   backgroundColor: r_colors
               }]
@@ -115,7 +118,7 @@
     </script>
   </div>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-default new_page">
   <div class="panel-heading">Observaciones</div>
   <div class="panel-body">
       <table class="table">

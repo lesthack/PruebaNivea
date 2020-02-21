@@ -382,7 +382,7 @@ table.dataTable thead .sorting:after {
 }
 
 .panel-green {
-    border-color: #5cb85c;
+    border-color: #cccccc;
 }
 
 .panel-green .panel-heading {
@@ -399,6 +399,23 @@ table.dataTable thead .sorting:after {
     color: #3d8b3d;
 }
 
+.panel-nivea {
+    border-color: #00136f;
+}
+
+.panel-nivea .panel-heading {
+    border-color: #5cb85c;
+    color: #fff;
+    background-color: #00136f;
+}
+
+.panel-nivea a {
+    color: #00136f;
+}
+
+.panel-nivea a:hover {
+    color: #337ab7;
+}
 .panel-red {
     border-color: #d9534f;
 }

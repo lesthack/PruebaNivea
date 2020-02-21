@@ -4,11 +4,16 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+from django.views.generic import ListView
 from django.core.exceptions import PermissionDenied
 from django.db import connection, transaction
 from django.utils.html import escape
 from core.models import *
 from core.forms import *
+
+class EvaluacionesList(ListView):
+    model = Evaluacion
+    template_name = 'evaluaciones.html'
 
 @csrf_protect
 def auth(request, incognito=False):

@@ -57,7 +57,7 @@ th.rotated-text > div > span {
 }
 </style>
 <div id="list_evaluaciones">
-  <table class="table table-sm table-striped table-hover" style="margin-top: 50px;">
+  <table class="table table-sm table-striped table-hover" style="margin-top: 50px; font-family: Arial;">
     <thead>
       <tr>
           <th>ID</th>
@@ -78,7 +78,7 @@ th.rotated-text > div > span {
       {% for evaluacion in evaluaciones %}
       <tr>
         <td>{{ evaluacion.id }}</td>
-        <td>{{ evaluacion.fecha }}</td>
+        <td>{{ evaluacion.fecha|date:'d/m/Y' }}</td>
         <td>{{ evaluacion.nombre_persona }}</td>
         <td>{{ evaluacion.edad }}</td>
         <td>{{ evaluacion.get_sexo_abr }}</td>
@@ -90,7 +90,7 @@ th.rotated-text > div > span {
         <td class="{{ evaluacion.get_calificacion.class }}">{{ evaluacion.get_calificacion.total }}</td>
         <td>
           <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-folder-open"></i></a>
-          <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a>
+          <!--a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a-->
           <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
           <a href="/evaluaciones/d/{{ evaluacion.id }}/" onclick="return confirm('¿Estás seguro de eliminar este elemento?');" class="btn btn-danger btn-circle noprint"><i class="fa fa-remove"></i></a>
         </td>

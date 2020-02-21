@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^evaluaciones/v/(?P<evaluacion_id>\d+)/$', evaluacion_view),
     url(r'^evaluaciones/e/(?P<evaluacion_id>\d+)/$', evaluacion_edit),
     url(r'^evaluaciones/e/(?P<evaluacion_id>\d+)/q/$', evaluacion_quiz),
+    url(r'^evaluaciones/d/(?P<evaluacion_id>\d+)/$', evaluacion_remove),
     url(r'^evaluaciones/n/$', evaluacion_new),
     url(r'^test/$', site.admin_view(test)),
     path('admin/', admin.site.urls),

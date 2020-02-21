@@ -136,5 +136,15 @@ def evaluacion_quiz(request, evaluacion_id):
     })
 
 @login_required(login_url='/auth')
+def evaluacion_remove(request, evaluacion_id):
+    try:
+        view_evaluacion = Evaluacion.objects.get(id=evaluacion_id)
+        view_evaluacion.delete()
+    except Evaluacion.DoesNotExist:
+        #agregar redirect a pagina que diga que no existe la eval
+        return HttpResponseRedirect('/evaluaciones/')
+    return HttpResponseRedirect('/evaluaciones/')
+
+@login_required(login_url='/auth')
 def test(request):
     return HttpResponse("Hello, world. You're at the polls index.")

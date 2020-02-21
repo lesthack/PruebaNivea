@@ -61,6 +61,7 @@ th.rotated-text > div > span {
         <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-folder-open"></i></a>
         <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a>
         <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
+        <a href="/evaluaciones/d/{{ evaluacion.id }}/" onclick="return confirm('¿Estás seguro de eliminar este elemento?');" class="btn btn-danger btn-circle noprint"><i class="fa fa-remove"></i></a>
       </td>
     </tr>
     {% endfor %}

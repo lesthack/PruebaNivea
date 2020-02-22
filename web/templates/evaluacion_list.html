@@ -3,38 +3,7 @@
 {% block title %}Evaluaciones{% endblock %}
 {% block title_page %}Evaluaciones{% endblock %}
 
-{% block content_head %}
-{% comment %}
-  <div class="row">
-    <div class="col-lg-3 col-md-6">
-      <div class="panel panel-nivea">
-        <div class="panel-heading">
-          <div class="row">
-            <div class="col-xs-3">
-              <i class="fa fa-tasks fa-5x"></i>
-            </div>
-            <div class="col-xs-9 text-right">
-              <div class="huge">{{ numero_evaluaciones }}</div>
-              <div>Evaluaciones registradas</div>
-            </div>
-        </div>
-        </div>
-        <a href="#list_evaluaciones">
-          <div class="panel-footer">
-            <span class="pull-left">View Details</span>
-            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-            <div class="clearfix"></div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-  <!-- /.row -->
-{% endcomment %}
-{% endblock %}
-
 {% block content %}
-{% load web_extras %}
 <div class="well noprint">
   <h4>Lista de evaluaciones registradas</h4>
   <p>Esta es una lista de todas las evaluaciones registradas en el sistema.</p>
@@ -76,7 +45,7 @@ th.rotated-text > div > span {
       </tr>
     </thead>
     <tbody>
-      {% for evaluacion in evaluaciones %}
+      {% for evaluacion in object_list %}
       <tr>
         <td>{{ evaluacion.id }}</td>
         <td>{{ evaluacion.fecha|date:'d/m/Y' }}</td>
@@ -99,5 +68,27 @@ th.rotated-text > div > span {
       {% endfor %}
     </tbody>
   </table>
+  <div class="row">
+    <div class="col-xs-12 col-md-8"></div>
+    <div class="col-xs-6 col-md-4">
+      <nav aria-label="Page navigation example">
+        {% if is_paginated %}
+        <ul class="pagination justify-content-end">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+          <li class="page-item {% if page_obj.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+          </li>
+          {% endif %}
+        </ul>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
 </div>
 {% endblock %}

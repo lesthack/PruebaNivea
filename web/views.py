@@ -12,8 +12,14 @@ from core.models import *
 from core.forms import *
 
 class EvaluacionesList(ListView):
-    model = Evaluacion
-    template_name = 'evaluaciones.html'
+  model = Evaluacion
+  template_name = 'evaluacion_list.html'
+  paginate_by = 10
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['competencias'] = Competencia.objects.all().order_by('nombre')
+    return context
 
 @csrf_protect
 def auth(request, incognito=False):

@@ -174,7 +174,7 @@ def profile_form(request):
                 print("ok")
                 pass
         else:
-            form_password = passwordForm(request.user)
+            form_password = MyPasswordChangeForm(request.user)
     else:
         form = profileForm(instance=request.user)
         form_password = MyPasswordChangeForm(request.user)

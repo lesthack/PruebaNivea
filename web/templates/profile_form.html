@@ -1,0 +1,74 @@
+{% extends "base_site.html" %}
+{% block title %}Perfil{% endblock %}
+
+{% block title_page %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading">Datos Generales</div>
+  <div class="panel-body">
+    <form role="form" method="POST">
+      <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+        <label class="control-label">Nombre de Usuario: </label>
+        {{ form.username }}
+        {% for error in form.username.errors %}
+        <small id="usernameHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.first_name.errors %}has-error{% endif %}">
+        <label class="control-label">Nombres: </label>
+        {{ form.first_name }}
+        {% for error in form.first_name.errors %}
+        <small id="first_nameHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+        <label class="control-label">Apellidos: </label>
+        {{ form.last_name }}
+        {% for error in form.last_name.errors %}
+        <small id="last_nameHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+        <label class="control-label">Email: </label>
+        {{ form.email }}
+        {% for error in form.email.errors %}
+        <small id="emailHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">Cambio de Contraseña</div>
+  <div class="panel-body">
+    <form role="form" method="POST">
+      <div class="form-group {% if form_password.old_password.errors %}has-error{% endif %}">
+        <label class="control-label">Contraseña Actual: </label>
+        {{ form_password.old_password }}
+        {% for error in form_password.old_password.errors %}
+        <small id="old_passwordHelp" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form_password.new_password1.errors %}has-error{% endif %}">
+        <label class="control-label">Nueva Contraseña: </label>
+        {{ form_password.new_password1 }}
+        {% for error in form_password.new_password1.errors %}
+        <small id="new_password1Help" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group {% if form_password.new_password2.errors %}has-error{% endif %}">
+        <label class="control-label">Repite Contraseña: </label>
+        {{ form_password.new_password2 }}
+        {% for error in form_password.new_password2.errors %}
+        <small id="new_password2Help" class="form-text text-muted">{{ error }}</small>
+        {% endfor %}
+      </div>
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Cambiar Password</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

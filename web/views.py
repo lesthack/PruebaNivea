@@ -4,7 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+from django.views import View
 from django.core.exceptions import PermissionDenied
 from django.db import connection, transaction
 from django.utils.html import escape
@@ -123,7 +125,7 @@ def evaluacion_quiz(request, evaluacion_id):
                     view_respuesta = EvaluacionRespuesta.objects.get(id=respuesta_id)
                     view_respuesta.respuesta = int(request.POST[r])
                     view_respuesta.save()
-                    return HttpResponseRedirect('/evaluaciones/v/{}/'.format(view_evaluacion.id))
+            return HttpResponseRedirect('/evaluaciones/v/{}/'.format(view_evaluacion.id))
         list_respuestas_1 = view_evaluacion.get_respuestas().filter(
             conducta__orden__gte=1, 
             conducta__orden__lte=38
@@ -157,5 +159,26 @@ def evaluacion_remove(request, evaluacion_id):
     return HttpResponseRedirect('/evaluaciones/')
 
 @login_required(login_url='/auth')
-def test(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+def profile_form(request):
+    if request.method == 'POST':
+        if 'username' in request.POST:
+            form = profileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                view_user = form.save(commit=False)
+                view_user.save()
+        else:
+            form = profileForm(instance=request.user)
+        if 'old_password' in request.POST:
+            form_password = MyPasswordChangeForm(request.user, request.POST)
+            if form_password.is_valid():
+                print("ok")
+                pass
+        else:
+            form_password = passwordForm(request.user)
+    else:
+        form = profileForm(instance=request.user)
+        form_password = MyPasswordChangeForm(request.user)
+    return render(request, 'profile_form.html', {
+        'form': form,
+        'form_password': form_password,
+    })

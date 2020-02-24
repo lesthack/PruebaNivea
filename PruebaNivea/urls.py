@@ -20,6 +20,6 @@ urlpatterns = [
     url(r'^evaluaciones/e/(?P<evaluacion_id>\d+)/q/$', evaluacion_quiz),
     url(r'^evaluaciones/d/(?P<evaluacion_id>\d+)/$', evaluacion_remove),
     url(r'^evaluaciones/n/$', evaluacion_new),
-    url(r'^test/$', site.admin_view(test)),
+    url(r'^perfil/$', profile_form),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

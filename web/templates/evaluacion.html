@@ -91,7 +91,7 @@
 
       {% for resultado in evaluacion.get_resultados %}
       r_lables.push('{{ resultado.competencia.nombre|title }}');
-      r_data.push({{ resultado.nivel_n }});
+      r_data.push({{ resultado.total }});
       r_colors.push({% if resultado.class == 'success' %}'#d4edda'{% elif resultado.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
       {% endfor %} 
 
@@ -100,12 +100,15 @@
           data: {
               labels: r_lables,
               datasets: [{
-                label: 'Total',
+                label: ['Total','asd'],
                 data: r_data,
                 backgroundColor: r_colors
               }]
           },
           options: {
+              legend: {
+                display: false
+              },
               scales: {
                 yAxes: [{
                   ticks: {

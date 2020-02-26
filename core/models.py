@@ -114,7 +114,8 @@ class Evaluacion(models.Model):
         (0, 'Primaria'),
         (1, 'Secundaria'),
         (2, 'Preparatoria'),
-        (3, 'Universidad')
+        (3, 'Universidad'),
+        (4, 'Carrera Técnica')
     )
     ESTADOCIVIL_CHOICES = (
         (0, 'Soltero/a'),

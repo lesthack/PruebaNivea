@@ -43,6 +43,10 @@
             <td>Número de Hijos</td>
             <td><b>{{ evaluacion.get_numero_hijos }}</b></td>
           </tr>
+          <tr class="{{ evaluacion.get_calificacion.class }}">
+            <td>Calificación Global</td>
+            <td><b>{{ evaluacion.get_calificacion.nivel }}</b></td>
+          </tr>
         </tbody>
       </table>
       <a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-default btn-block noprint">Editar</a>
@@ -89,11 +93,14 @@
       var r_data = [];
       var r_colors = [];
 
+      r_lables.push('Total');
+      r_data.push({{ evaluacion.get_calificacion.total }});
+      r_colors.push({% if evaluacion.class == 'success' %}'#d4edda'{% elif evaluacion.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
       {% for resultado in evaluacion.get_resultados %}
       r_lables.push('{{ resultado.competencia.nombre|title }}');
       r_data.push({{ resultado.total }});
       r_colors.push({% if resultado.class == 'success' %}'#d4edda'{% elif resultado.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
-      {% endfor %} 
+      {% endfor %}       
 
       var myChart = new Chart(ctx, {
           type: 'horizontalBar',

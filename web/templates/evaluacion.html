@@ -95,7 +95,7 @@
 
       r_lables.push('Total');
       r_data.push({{ evaluacion.get_calificacion.total }});
-      r_colors.push({% if evaluacion.class == 'success' %}'#d4edda'{% elif evaluacion.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
+      r_colors.push({% if evaluacion.get_calificacion.class == 'success' %}'#d4edda'{% elif evaluacion.get_calificacion.class == 'warning' %}'#fff3cd'{% else %}'#f8d7da'{% endif%});
       {% for resultado in evaluacion.get_resultados %}
       r_lables.push('{{ resultado.competencia.nombre|title }}');
       r_data.push({{ resultado.total }});

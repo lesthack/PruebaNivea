@@ -747,6 +747,15 @@ table.dataTable thead .sorting:after {
   font-family: "Arial";
   text-align: justify;
 }
+.apto{
+  background-color: #008000;
+}
+.apto_condicionado{
+  background-color: #ffff00;
+}
+.no_apto{
+  background-color: #ff0000;
+}
 @media print{
   .noprint{
     display: none;

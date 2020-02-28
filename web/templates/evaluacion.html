@@ -147,7 +147,6 @@
       <table class="table">
         <tbody>
           {% for resultado in evaluacion.get_resultados %}
-            {% if resultado.nivel != 'No Apto' %}
             <tr>
               <td>
                 <h3 class="competencia_title">{{ resultado.competencia.nombre|title }}</h3>
@@ -175,7 +174,6 @@
                 {% endif %}
               </td>
             </tr>
-            {% endif %}
           {% endfor %}
         </tbody>
       </table>

@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.html import format_html
-from django.db.models import Sum
+from django.db.models import Sum, Max
 import datetime
 
 class Escala(models.Model):
@@ -64,6 +64,13 @@ class Competencia(models.Model):
 
     def __str__(self):
         return u'{}'.format(self.nombre)
+
+    def get_sum_total(self):
+        _sum_ = Conducta.objects.filter(competencia=self) \
+            .values('id') \
+            .annotate(v=Max('conductavalor__valor')) \
+            .aggregate(Sum('v'))
+        return _sum_['v__sum']
 
 class Conducta(models.Model):
     competencia = models.ManyToManyField(Competencia)
@@ -166,6 +173,7 @@ class Evaluacion(models.Model):
 
     def get_calificacion(self, competencia=None):
         total = 0
+        porciento = 0
         calificacion = {
         }
         if competencia:
@@ -173,8 +181,12 @@ class Evaluacion(models.Model):
         else:
             for r in self.get_respuestas():
                 if r.respuesta > 0: total += r.respuesta
+            if total > 0:
+                _sum_ = Conducta.objects.values('id').annotate(v=Max('conductavalor__valor')).aggregate(Sum('v'))
+                porciento = total / _sum_['v__sum']
             calificacion = {
-                'total': total
+                'total': total,
+                'porciento': int(porciento * 100)
             }
             if total >= 0 and total < 90:
                 calificacion['nivel'] = 'Apto'
@@ -221,7 +233,7 @@ class Evaluacion(models.Model):
                     nivel_n = 3
                     clase = 'danger'
                 if total > 0:
-                    porciento = total / 80
+                    porciento = total / competencia.get_sum_total()
                 else:
                     porciento = 0
                 resultados.append({

@@ -93,14 +93,14 @@
       var r_data = [];
       var r_colors = [];
 
-      r_lables.push('Total');
-      r_data.push({{ evaluacion.get_calificacion.total }});
-      r_colors.push({% if evaluacion.get_calificacion.class == 'success' %}'#008000'{% elif evaluacion.get_calificacion.class == 'warning' %}'#ffff00'{% else %}'#ff0000'{% endif%});
       {% for resultado in evaluacion.get_resultados %}
       r_lables.push('{{ resultado.competencia.nombre|title }}');
-      r_data.push({{ resultado.total }});
+      r_data.push({{ resultado.porciento }});
       r_colors.push({% if resultado.class == 'success' %}'#008000'{% elif resultado.class == 'warning' %}'#ffff00'{% else %}'#ff0000'{% endif%});
       {% endfor %}       
+      r_lables.push('Total');
+      r_data.push({{ evaluacion.get_calificacion.porciento }});
+      r_colors.push({% if evaluacion.get_calificacion.class == 'success' %}'#008000'{% elif evaluacion.get_calificacion.class == 'warning' %}'#ffff00'{% else %}'#ff0000'{% endif%});
 
       var myChart = new Chart(ctx, {
           type: 'horizontalBar',

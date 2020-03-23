@@ -203,13 +203,13 @@ class Evaluacion(models.Model):
                 'porciento': int(porciento * 100)
             }
             if total >= 0 and total < 90:
-                calificacion['nivel'] = 'Apto'
+                calificacion['nivel'] = 'Recomendado'
                 calificacion['class'] = 'success'
             elif total >= 90 and total < 108:
-                calificacion['nivel'] = 'Apto Condicionado'
+                calificacion['nivel'] = 'Con Reserva'
                 calificacion['class'] = 'warning'
             elif total >= 108:
-                calificacion['nivel'] = 'No Apto'
+                calificacion['nivel'] = 'No Recomendado'
                 calificacion['class'] = 'danger'
             else:
                 calificacion['nivel'] = 'No calificado'
@@ -235,15 +235,15 @@ class Evaluacion(models.Model):
                 for r in respuestas.filter(conducta__competencia=competencia):
                     if r.respuesta > 0: total += r.respuesta
                 if total >= competencia.apto_min and total <= competencia.apto_max:
-                    nivel = 'Apto'
+                    nivel = 'Recomendado'
                     nivel_n = 0
                     clase = 'success'
                 elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
-                    nivel = 'Apto Condicionado'
+                    nivel = 'Con Reserva'
                     nivel_n = 2
                     clase = 'warning'
                 elif total >= competencia.no_apto_min:
-                    nivel = 'No Apto'
+                    nivel = 'No Recomendado'
                     nivel_n = 3
                     clase = 'danger'
                 if total > 0:

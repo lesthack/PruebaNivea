@@ -64,10 +64,6 @@ th.rotated-text > div > span {
           <th>ID</th>
           <th>Creado</th>
           <th>Persona</th>
-          <th>Edad</th>
-          <th>Sexo</th>
-          <th>Escolaridad</th>
-          <th>Localidad</th>
           {% for competencia in competencias %}
           <th class="rotated-text" scope="col"><div><span>{{ competencia.nombre|title }}</span></div></th>
           {% endfor %}
@@ -81,10 +77,6 @@ th.rotated-text > div > span {
         <td>{{ evaluacion.id }}</td>
         <td>{{ evaluacion.fecha|date:'d/m/Y' }}</td>
         <td>{{ evaluacion.nombre_persona }}</td>
-        <td>{{ evaluacion.edad }}</td>
-        <td>{{ evaluacion.get_sexo_abr }}</td>
-        <td>{{ evaluacion.get_escolaridad }}</td>
-        <td>{{ evaluacion.localidad }}</td>
         {% for resultado in evaluacion.get_resultados %}
         <td class="{{ resultado.class }}">{{ resultado.total }}</td>
         {% endfor %}

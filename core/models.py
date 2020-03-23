@@ -114,10 +114,12 @@ class ConductaValor(models.Model):
 
 class Evaluacion(models.Model):
     GENERO_CHOICES = (
+        (-1, 'No Definido'),
         (0, 'Masculino'),
         (1, 'Femenino')
     )
     ESCOLARIDAD_CHOICES = (
+        (-1, 'No Definido'),
         (0, 'Primaria'),
         (1, 'Secundaria'),
         (2, 'Preparatoria'),
@@ -125,6 +127,7 @@ class Evaluacion(models.Model):
         (4, 'Carrera Técnica')
     )
     ESTADOCIVIL_CHOICES = (
+        (-1, 'No Definido'),
         (0, 'Soltero/a'),
         (1, 'Casado/a'),
         (2, 'Unión Libre'),
@@ -133,6 +136,7 @@ class Evaluacion(models.Model):
         (5, 'Viudo/a'),
     )
     NUMEROHIJOS_CHOICES = (
+        (-1, 'No Definido'),
         (0, 'Ninguno'),
         (1,'Uno'),
         (2,'Dos'),
@@ -143,6 +147,7 @@ class Evaluacion(models.Model):
     )
     nombre_persona = models.CharField(max_length=250)
     fecha = models.DateField(default=datetime.date.today)
+    fecha_nacimiento = models.DateField(null=True, blank=True)
     edad = models.IntegerField(validators=[MinValueValidator(18), MaxValueValidator(60)])
     sexo = models.IntegerField(choices=GENERO_CHOICES)
     estado_civil = models.IntegerField(choices=ESTADOCIVIL_CHOICES)
@@ -155,6 +160,15 @@ class Evaluacion(models.Model):
 
     def __str__(self):
         return 'Evaluacion {}'.format(self.id)
+
+    def save(self, *args, **kwargs):
+        self.edad = -1
+        self.sexo = -1
+        self.estado_civil = -1
+        self.escolaridad = -1
+        self.localidad_id = -1
+        self.numero_hijos = -1
+        super(Evaluacion, self).save(*args, **kwargs)
 
     def get_sexo(self):
         return '{}'.format(self.GENERO_CHOICES[self.sexo][1])

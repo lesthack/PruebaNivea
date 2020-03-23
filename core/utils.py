@@ -81,3 +81,14 @@ def inserts_all():
     inserts_competencias()
     inserts_conductas()
     inserts_competencias_conductas()
+
+def patch1():
+    """
+      Patch para cambios del 21 de Marzo, 2019
+    """
+    # Localidades
+    try:
+        Localidad.objects.get_or_create(id=-1, nombre='No Definido')
+        print('Localidad "No Definida" agregada.')
+    except Exception as e:
+        print('Error: ', e)

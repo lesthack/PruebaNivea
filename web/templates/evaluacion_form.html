@@ -28,46 +28,11 @@
         <small id="fechaHelp" class="form-text text-muted">{{ error }}</small>
         {% endfor %}
       </div>
-      <div class="form-group {% if form.edad.errors %}has-error{% endif %}">
-        <label class="control-label">{{ form.edad.label }}</label>
-        {{ form.edad }}
-        {% for error in form.edad.errors %}
-        <small id="edadHelp" class="form-text text-muted">{{ error }}</small>
-        {% endfor %}
-      </div>
-      <div class="form-group {% if form.sexo.errors %}has-error{% endif %}">
-        <label class="control-label">{{ form.sexo.label }}</label>
-        {{ form.sexo }}
-        {% for error in form.sexo.errors %}
-        <small id="sexoHelp" class="form-text text-muted">{{ error }}</small>
-        {% endfor %}
-      </div>
-      <div class="form-group {% if form.estado_civil.errors %}has-error{% endif %}">
-        <label class="control-label">{{ form.estado_civil.label }}</label>
-        {{ form.estado_civil }}
-        {% for error in form.estado_civil.errors %}
-        <small id="estadocivilHelp" class="form-text text-muted">{{ error }}</small>
-        {% endfor %}
-      </div>
-      <div class="form-group {% if form.escolaridad.errors %}has-error{% endif %}">
-        <label class="control-label">{{ form.escolaridad.label }}</label>
-        {{ form.escolaridad }}
-        {% for error in form.escolaridad.errors %}
-        <small id="escolaridadHelp" class="form-text text-muted">{{ error }}</small>
-        {% endfor %}
-      </div>
-      <div class="form-group {% if form.localidad.errors %}has-error{% endif %}">
-        <label class="control-label">{{ form.localidad.label }}</label>
-        {{ form.localidad }}
-        {% for error in form.localidad.errors %}
-        <small id="localidadHelp" class="form-text text-muted">{{ error }}</small>
-        {% endfor %}
-      </div>
-      <div class="form-group {% if form.numero_hijos.errors %}has-error{% endif %}">
-        <label class="control-label">{{ form.numero_hijos.label }}</label>
-        {{ form.numero_hijos }}
-        {% for error in form.numero_hijos.errors %}
-        <small id="numerohijosHelp" class="form-text text-muted">{{ error }}</small>
+      <div class="form-group">
+        <label class="control-label {% if form.fecha_nacimiento.errors %}has-error{% endif %}">{{ form.fecha_nacimiento.label }}</label>
+        {{ form.fecha_nacimiento }}
+        {% for error in form.fecha_nacimiento.errors %}
+        <small id="fechaNacimientoHelp" class="form-text text-muted">{{ error }}</small>
         {% endfor %}
       </div>
       {% csrf_token %}

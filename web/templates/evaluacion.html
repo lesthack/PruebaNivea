@@ -12,40 +12,30 @@
       <table class="table">
         <tbody>
           <tr>
-            <td width="150px"><b>ID</b></td>
+            <td width="150px"><b>ID:</b></td>
             <td><b>{{ evaluacion.id }}</b></td>
           </tr>
           <tr>
-            <td>Fecha</td>
+            <td>Fecha:</td>
             <td><b>{{ evaluacion.fecha }}</b></td>
           </tr>
           <tr>
-            <td>Sexo</td>
-            <td><b>{{ evaluacion.get_sexo }}</b></td>
+            <td>Fecha Nacimiento:</td>
+            <td>
+              {% if evaluacion.fecha_nacimiento %}
+              <b>{{ evaluacion.fecha_nacimiento }}</b>
+              {% endif %}
+            </td>
           </tr>
-          <tr>
-            <td>Edad</td>
-            <td><b>{{ evaluacion.edad }} años</b></td>
-          </tr>
-          <tr>
-            <td>Estado Civíl</td>
-            <td><b>{{ evaluacion.get_estado_civil }}</b></td>
-          </tr>
-          <tr>
-            <td>Escolaridad</td>
-            <td><b>{{ evaluacion.get_escolaridad }}</b></td>
-          </tr>
-          <tr>
-            <td>Localidad</td>
-            <td><b>{{ evaluacion.localidad }}</b></td>
-          </tr>
-          <tr>
-            <td>Número de Hijos</td>
-            <td><b>{{ evaluacion.get_numero_hijos }}</b></td>
-          </tr>
-          <tr class="{{ evaluacion.get_calificacion.class }}">
-            <td>Calificación Global</td>
-            <td><b>{{ evaluacion.get_calificacion.nivel }}</b></td>
+          <tr class="{% if evaluacion.get_calificacion.total > 0 %}{{ evaluacion.get_calificacion.class }}{% endif %}">
+            <td>Calificación:</td>
+            <td>
+              <b>
+                {% if evaluacion.get_calificacion.total > 0 %}
+                {{ evaluacion.get_calificacion.nivel }}
+                {% else %}Sin resultados{% endif %}
+              </b>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -79,10 +79,13 @@
     <script charset="utf-8">
       var ctx = document.getElementById('myChart').getContext('2d');
 
-      var r_lables = [];
-      var r_data = [];
+      var r_labels = [];
       var r_colors = [];
+      var r_data_apto = [];
+      var r_data_apto_condicionado = [];
+      var r_data_no_apto = [];
 
+      {% comment %}
       {% for resultado in evaluacion.get_resultados %}
       r_lables.push('{{ resultado.competencia.nombre|title }}');
       r_data.push({{ resultado.porciento }});
@@ -91,23 +94,68 @@
       r_lables.push('Total');
       r_data.push({{ evaluacion.get_calificacion.porciento }});
       r_colors.push({% if evaluacion.get_calificacion.class == 'success' %}'#008000'{% elif evaluacion.get_calificacion.class == 'warning' %}'#ffff00'{% else %}'#ff0000'{% endif%});
+      {% endcomment %}
+
+      {% for resultado in evaluacion.get_resultados %}
+      r_labels.push('{{ resultado.competencia.nombre|title }}: {{ resultado.totales.total }}%');
+      r_data_apto.push({{ resultado.totales.apto }})
+      r_data_apto_condicionado.push({{ resultado.totales.apto_condicionado }})
+      r_data_no_apto.push({{ resultado.totales.no_apto }})
+      {% endfor %}
+
+      var r_data = {
+        labels: r_labels,
+        datasets: [
+          {
+            label: 'Recomendado',
+            data: r_data_apto,
+            backgroundColor: [
+              '#008000','#008000','#008000','#008000','#008000','#008000','#008000','#008000'
+            ]
+          },
+          {
+            label: 'Con Reserva',
+            data: r_data_apto_condicionado,
+            backgroundColor: [
+              '#ffff00','#ffff00','#ffff00','#ffff00','#ffff00','#ffff00','#ffff00','#ffff00',
+            ]
+          },
+          {
+            label: 'No Recomendado',
+            data: r_data_no_apto,
+            backgroundColor: [
+              '#ff0000','#ff0000','#ff0000','#ff0000','#ff0000','#ff0000','#ff0000','#ff0000',
+            ]
+          },
+        ]
+      };
 
       var myChart = new Chart(ctx, {
           type: 'horizontalBar',
+          {% comment %}
           data: {
               labels: r_lables,
               datasets: [{
-                label: ['Total','asd'],
+                label: ['Total'],
                 data: r_data,
                 backgroundColor: r_colors
               }]
           },
+          {% endcomment %}
+          data: r_data,
           options: {
               legend: {
                 display: false
               },
               scales: {
+                xAxes: [{
+                  stacked: true,
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }],
                 yAxes: [{
+                  stacked: true,
                   ticks: {
                     beginAtZero: true
                   }
@@ -115,6 +163,7 @@
               },
               animation: {
                 onComplete: function(){
+                  {% comment %}
                   var ctx = this.chart.ctx;
                   this.data.datasets.forEach(function (dataset){
                     for (var i = 0; i < dataset.data.length; i++) {
@@ -124,6 +173,7 @@
                       }
                     }
                   });
+                  {% endcomment %}
                 }
               }
           }

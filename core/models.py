@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.html import format_html
 from django.db.models import Sum, Max
 import datetime
+import math
 
 class Escala(models.Model):
     nombre = models.CharField(max_length=250)
@@ -71,6 +72,59 @@ class Competencia(models.Model):
             .annotate(v=Max('conductavalor__valor')) \
             .aggregate(Sum('v'))
         return _sum_['v__sum']
+
+    def get_escala(self):
+        escala = {}
+        # No Apto
+        print(self.nombre)
+        m = self.no_apto_max - self.no_apto_min
+        for i in range(0,25):
+            v = 100-i
+            if v == 100: escala[v] = self.no_apto_max
+            else: escala[v] = escala[v+1] - (m/25) 
+        # Apto Condicionado
+        m = self.apto_condicionado_max - self.apto_condicionado_min
+        for i in range(0,25):
+            v = 75-i
+            escala[v] = escala[v+1] - (m/25) 
+        # Apto
+        m = self.apto_max - self.apto_min
+        for i in range(0,50):
+            v = 50-i
+            escala[v] = escala[v+1] - (m/50) 
+        return escala
+
+    def get_barras(self, val):
+        values = {
+            'apto': 0,
+            'apto_condicionado': 0,
+            'no_apto': 0,
+            'total': 0
+        }
+        escala = self.get_escala()
+        if val >= self.apto_max:
+            values['apto'] = 50
+            if val >= self.apto_condicionado_max:
+                values['apto_condicionado'] = 75-50
+                if val >= self.no_apto_max:
+                    values['no_apto'] = 100-75
+                else:
+                    for p in escala:
+                        if val >= escala[p]:
+                            values['no_apto'] = p-75
+                            break
+            else:
+                for p in escala:
+                    if val >= escala[p]:
+                        values['apto_condicionado'] = p-50
+                        break
+        else:
+            for p in escala:
+                if val >= escala[p]:
+                    values['apto'] = p
+                    break
+        values['total'] = values['apto'] + values['apto_condicionado'] + values['no_apto']
+        return values
 
 class Conducta(models.Model):
     competencia = models.ManyToManyField(Competencia)
@@ -256,7 +310,8 @@ class Evaluacion(models.Model):
                     'nivel': nivel,
                     'nivel_n': nivel_n,
                     'porciento': int(porciento * 100),
-                    'class': clase
+                    'class': clase,
+                    'totales': competencia.get_barras(total)
                 })
             except Exception as e:
                 print('Error: {}'.format(e))

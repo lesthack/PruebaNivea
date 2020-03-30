@@ -92,3 +92,9 @@ def patch1():
         print('Localidad "No Definida" agregada.')
     except Exception as e:
         print('Error: ', e)
+    # Competencias
+    for nombre_competencia in lista_competencias.keys():
+        view_competencia = Competencia.objects.get(nombre=nombre_competencia)
+        view_competencia.no_apto_max = lista_competencias[nombre_competencia]['no_apto_max']
+        view_competencia.save()
+        print('{} actualizada'.format(nombre_competencia))

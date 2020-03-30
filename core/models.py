@@ -111,12 +111,12 @@ class Competencia(models.Model):
                 else:
                     for p in escala:
                         if val >= escala[p]:
-                            values['no_apto'] = p-75
+                            values['no_apto'] = (0, p-75)[p-75>0]
                             break
             else:
                 for p in escala:
                     if val >= escala[p]:
-                        values['apto_condicionado'] = p-50
+                        values['apto_condicionado'] = (0, p-50)[p-50>0]
                         break
         else:
             for p in escala:

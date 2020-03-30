@@ -45,7 +45,7 @@ th.rotated-text > div > span {
       {% for evaluacion in object_list %}
       <tr>
         <td>{{ evaluacion.id }}</td>
-        <td style="{% if evaluacion.get_calificacion.total > 0 %}color:{% if evaluacion.get_calificacion.class == 'success' %}#008000{% elif evaluacion.get_calificacion.class == 'warning' %}#ffff00{% else %}#ff0000{% endif %};{% endif %}">
+        <td style="{% if evaluacion.get_calificacion.total > 0 %}color:{% if evaluacion.get_calificacion.class == 'success' %}#92D050{% elif evaluacion.get_calificacion.class == 'warning' %}#F19D65{% else %}#FF2828{% endif %};{% endif %}">
           {% if evaluacion.get_calificacion.total > 0 %}
             {{ evaluacion.get_calificacion.nivel }}
           {% else %}

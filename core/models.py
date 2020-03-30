@@ -76,7 +76,6 @@ class Competencia(models.Model):
     def get_escala(self):
         escala = {}
         # No Apto
-        print(self.nombre)
         m = self.no_apto_max - self.no_apto_min
         for i in range(0,25):
             v = 100-i

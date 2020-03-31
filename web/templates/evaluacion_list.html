@@ -25,6 +25,15 @@ th.rotated-text > div {
 th.rotated-text > div > span {
     padding: 5px 10px;
 }
+.success_dos{
+  background-color:#92D050;
+}
+.warning_dos{
+  background-color:#F19D65;
+}
+.danger_dos{
+  background-color:#FF2828;
+}
 </style>
 <div id="list_evaluaciones">
   <table class="table table-sm table-striped table-hover" style="margin-top: 50px; font-family: Arial;">
@@ -58,12 +67,13 @@ th.rotated-text > div > span {
         <td class="{% if resultado.total > 0%}{{ resultado.class }}{% endif %}">{{ resultado.total }}</td>
         {% endfor %}
         <td class="{% if evaluacion.get_calificacion.total > 0 %}{{ evaluacion.get_calificacion.class }}{% endif %}">{{ evaluacion.get_calificacion.total }}</td>
-        <td>
+        <td width="120px">
           <a href="/evaluaciones/v/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-folder-open"></i></a>
           <!--a href="/evaluaciones/e/{{ evaluacion.id }}/" class="btn btn-primary btn-circle noprint"><i class="fa fa-edit"></i></a-->
           <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
           <a href="/evaluaciones/d/{{ evaluacion.id }}/" onclick="return confirm('¿Estás seguro de eliminar este elemento?');" class="btn btn-danger btn-circle noprint"><i class="fa fa-remove"></i></a>
         </td>
+        <td width="100px" class="{% if evaluacion.get_calificacion.total > 0 %}{{ evaluacion.get_calificacion.class }}_dos{% endif %}">&nbsp;</td>
       </tr>
       {% endfor %}
     </tbody>

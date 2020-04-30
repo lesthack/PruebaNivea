@@ -19,10 +19,20 @@ class EvaluacionesList(ListView):
   paginate_by = 10
   ordering = ['-created_at']
 
+  def get_queryset(self):
+    query = self.request.GET.get('q')
+    object_list = self.model.objects.all()
+    if query:
+        object_list = object_list.filter(nombre_persona__icontains=query)
+    return object_list
+
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['competencias'] = Competencia.objects.all().order_by('nombre')
+    context['sugerencia_nombres'] = Evaluacion.objects.all().values('nombre_persona')
+    context['q'] = self.request.GET.get('q','')
     return context
+
 
 @csrf_protect
 def auth(request, incognito=False):
@@ -183,3 +193,16 @@ def profile_form(request):
         'form': form,
         'form_password': form_password,
     })
+
+@login_required(login_url='/auth')
+def json_nombres(request):
+    #if not request.is_ajax():
+    #    return HttpResponseRedirect('/evaluaciones/')
+    query = request.GET.get('q')
+    list_nombres = Evaluacion.objects.all().order_by('nombre_persona')
+    if query:
+        list_nombres = list_nombres.filter(nombre_persona__icontains=query)
+    else:
+        list_nombres = list_nombres[0:10]
+    json_list = [item.nombre_persona for item in list_nombres]
+    return JsonResponse(json_list, safe=False)

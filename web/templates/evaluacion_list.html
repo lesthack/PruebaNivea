@@ -36,6 +36,9 @@ th.rotated-text > div > span {
 }
 </style>
 <div id="list_evaluaciones">
+  <form method="GET" class="noprint" style="margin-top: 10px; margin-bottom: 10px;">
+    <input name="q" id="id_search" list="list_nombres" class="form-control form-control-lg" type="text" placeholder="Buscar" autocomplete="off" onChange="submit()" value="{{ q }}" />
+  </form>
   <table class="table table-sm table-striped table-hover" style="margin-top: 50px; font-family: Arial;">
     <thead>
       <tr>
@@ -100,5 +103,16 @@ th.rotated-text > div > span {
       </nav>
     </div>
   </div>
+  <script>
+    (function(){
+      new autoComplete({
+        selector: 'input[name="q"]',
+        minChars: 1,
+        source: function(term, response){
+            $.getJSON('/json/nombres/', { q: term }, function(data){ console.log(data); response(data); });
+        }
+    });
+    })();
+  </script>  
 </div>
 {% endblock %}

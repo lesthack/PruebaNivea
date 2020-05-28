@@ -20,17 +20,35 @@ class EvaluacionesList(ListView):
   ordering = ['-created_at']
 
   def get_queryset(self):
-    query = self.request.GET.get('q')
+    id = self.request.GET.get('id')
+    persona = self.request.GET.get('persona')
+    creado = self.request.GET.get('creado')
+    calificacion = self.request.GET.get('calificacion')
     object_list = self.model.objects.all()
-    if query:
-        object_list = object_list.filter(nombre_persona__icontains=query)
+    if id:
+        object_list = object_list.filter(id__icontains=id)
+    if creado:
+        object_list = object_list.filter(fecha__range=(creado, creado))
+    if persona:
+        object_list = object_list.filter(nombre_persona__icontains=persona)
+    # Hack
+    if calificacion and int(calificacion)>-1:
+        nivel = ('Recomendado', 'No Recomendado', 'Con Reserva')[int(calificacion)]
+        _object_list_ = []
+        for item in object_list:
+            if item.get_calificacion()['nivel'] == nivel:
+                _object_list_.append(item)
+        object_list = _object_list_
     return object_list
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['competencias'] = Competencia.objects.all().order_by('nombre')
     context['sugerencia_nombres'] = Evaluacion.objects.all().values('nombre_persona')
-    context['q'] = self.request.GET.get('q','')
+    context['persona'] = self.request.GET.get('persona','')
+    context['calificacion'] = self.request.GET.get('calificacion','')
+    context['id'] = self.request.GET.get('id','')
+    context['creado'] = self.request.GET.get('creado','')
     return context
 
 
@@ -195,14 +213,22 @@ def profile_form(request):
     })
 
 @login_required(login_url='/auth')
-def json_nombres(request):
-    #if not request.is_ajax():
-    #    return HttpResponseRedirect('/evaluaciones/')
+def json_field(request, field_name):
+    json_list = []
     query = request.GET.get('q')
-    list_nombres = Evaluacion.objects.all().order_by('nombre_persona')
-    if query:
-        list_nombres = list_nombres.filter(nombre_persona__icontains=query)
-    else:
-        list_nombres = list_nombres[0:10]
-    json_list = [item.nombre_persona for item in list_nombres]
+    if field_name in ['ids','nombres','calificacion','fecha']:
+        if field_name == 'nombres':
+            list_items = Evaluacion.objects.all().order_by('nombre_persona')
+            if query:
+                list_items = list_items.filter(nombre_persona__icontains=query)
+            else:
+                list_nombres = list_items[0:10]
+            json_list = [item.nombre_persona for item in list_items]
+        if field_name == 'ids':
+            list_items = Evaluacion.objects.all().order_by('id')
+            if query:
+                list_items = list_items.filter(id__icontains=query)
+            else:
+                list_nombres = list_items[0:10]
+            json_list = [item.id for item in list_items]
     return JsonResponse(json_list, safe=False)

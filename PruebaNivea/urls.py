@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^evaluaciones/d/(?P<evaluacion_id>\d+)/$', evaluacion_remove),
     url(r'^evaluaciones/n/$', evaluacion_new),
     url(r'^perfil/$', profile_form),
-    url(r'^json/nombres/$', json_nombres),
+    url(r'^json/(?P<field_name>\w+)/$', json_field),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -37,7 +37,25 @@ th.rotated-text > div > span {
 </style>
 <div id="list_evaluaciones">
   <form method="GET" class="noprint" style="margin-top: 10px; margin-bottom: 10px;">
-    <input name="q" id="id_search" list="list_nombres" class="form-control form-control-lg" type="text" placeholder="Buscar" autocomplete="off" onChange="submit()" value="{{ q }}" />
+    <div class="row">
+      <div class="col-md-2">
+        <input name="id" id="id_id" list="list_ids" class="form-control form-control-lg" type="text" placeholder="ID" autocomplete="off" onChange="submit()" value="{{ id }}" />
+      </div>
+      <div class="col-md-2">
+        <select name="calificacion" class="form-control" onChange="submit()">
+          <option value="-1">-- Calificación --</option>
+          <option value="0" {% if calificacion == '0' %}selected{% endif %}>Recomendado</option>
+          <option value="1" {% if calificacion == '1' %}selected{% endif %}>No Recomendado</option>
+          <option value="2" {% if calificacion == '2' %}selected{% endif %}>Con Reserva</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input name="creado" id="id_creado" class="form-control form-control-lg" type="date" placeholder="Creado" onChange="submit()" value="{{ creado }}" />
+      </div>
+      <div class="col-md-4">
+        <input name="persona" id="id_persona" list="list_nombres" class="form-control form-control-lg" type="text" placeholder="Persona" autocomplete="off" onChange="submit()" value="{{ persona }}" />
+      </div>
+    </div>
   </form>
   <table class="table table-sm table-striped table-hover" style="margin-top: 50px; font-family: Arial;">
     <thead>
@@ -106,12 +124,19 @@ th.rotated-text > div > span {
   <script>
     (function(){
       new autoComplete({
-        selector: 'input[name="q"]',
+        selector: 'input[name="persona"]',
         minChars: 1,
         source: function(term, response){
-            $.getJSON('/json/nombres/', { q: term }, function(data){ console.log(data); response(data); });
+            $.getJSON('/json/nombres/', { q: term }, function(data){ response(data); });
         }
-    });
+      });
+      new autoComplete({
+        selector: 'input[name="id"]',
+        minChars: 1,
+        source: function(term, response){
+            $.getJSON('/json/ids/', { q: term }, function(data){ response(data); });
+        }
+      });
     })();
   </script>  
 </div>

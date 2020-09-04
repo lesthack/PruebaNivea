@@ -75,7 +75,7 @@ th.rotated-text > div > span {
       {% for evaluacion in object_list %}
       <tr>
         <td>{{ evaluacion.id }}</td>
-        <td style="{% if evaluacion.get_calificacion.total > 0 %}color:{% if evaluacion.get_calificacion.class == 'success' %}#92D050{% elif evaluacion.get_calificacion.class == 'warning' %}#F19D65{% else %}#FF2828{% endif %};{% endif %}">
+        <td style="{% if evaluacion.get_calificacion.total > 0 %}text-shadow: 0.5px 0 0 #333, -0.5px 0 0 #333, 0 0.5px 0 #333, 0 -0.5px 0 #333, 0.5px 0.5px #333, -0.5px -0.5px 0 #333, 0.5px -0.5px 0 #333, -0.5px 0.5px 0 #333 !important; color: {{ evaluacion.get_calificacion.primary_color }} !important;{% endif %}">
           {% if evaluacion.get_calificacion.total > 0 %}
             {{ evaluacion.get_calificacion.nivel }}
           {% else %}
@@ -94,7 +94,7 @@ th.rotated-text > div > span {
           <a href="/evaluaciones/e/{{ evaluacion.id }}/q/" class="btn btn-primary btn-circle noprint"><i class="fa fa-list-alt"></i></a>
           <a href="/evaluaciones/d/{{ evaluacion.id }}/" onclick="return confirm('¿Estás seguro de eliminar este elemento?');" class="btn btn-danger btn-circle noprint"><i class="fa fa-remove"></i></a>
         </td>
-        <td width="100px" class="{% if evaluacion.get_calificacion.total > 0 %}{{ evaluacion.get_calificacion.class }}_dos{% endif %}">&nbsp;</td>
+        <td width="100px" style="{% if evaluacion.get_calificacion.total > 0 %}border: 1px solid #999;background-color: {{ evaluacion.get_calificacion.primary_color }} !important;{% endif %}">&nbsp;</td>
       </tr>
       {% endfor %}
     </tbody>

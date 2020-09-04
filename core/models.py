@@ -7,6 +7,21 @@ from django.db.models import Sum, Max
 import datetime
 import math
 
+COLORS = {
+  'primary': {
+    # nivel: color
+    0: '#008000',
+    2: '#ffff00',
+    3: '#ff0000',
+  },
+  'secondary': {
+    # nivel: color
+    0: '#92D050',
+    2: '#F19D65',
+    3: '#FF2828',
+  },
+}
+
 class Escala(models.Model):
     nombre = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add = True)
@@ -59,6 +74,8 @@ class Competencia(models.Model):
     no_apto = models.TextField()
     no_apto_min = models.IntegerField(default=0)
     no_apto_max = models.IntegerField(default=0)
+    tipo = models.SmallIntegerField(default=0)
+    contra_titulo = models.CharField(max_length=250, default='')
     
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
@@ -251,22 +268,36 @@ class Evaluacion(models.Model):
             if total > 0:
                 _sum_ = Conducta.objects.values('id').annotate(v=Max('conductavalor__valor')).aggregate(Sum('v'))
                 porciento = total / _sum_['v__sum']
+                inverso = 1 - ( total/_sum_['v__sum'] )
             calificacion = {
                 'total': total,
-                'porciento': int(porciento * 100)
+                'porciento': int(porciento * 100),
+                'inverso': int(inverso*100)
             }
-            if total >= 0 and total < 90:
+            if inverso <= 0.33:
                 calificacion['nivel'] = 'Recomendado'
-                calificacion['class'] = 'success'
-            elif total >= 90 and total < 108:
+                calificacion['primary_color'] = COLORS['primary'][0]
+                calificacion['secondary_color'] = COLORS['secondary'][0]
+            elif inverso <= 0.66:
                 calificacion['nivel'] = 'Con Reserva'
-                calificacion['class'] = 'warning'
-            elif total >= 108:
-                calificacion['nivel'] = 'No Recomendado'
-                calificacion['class'] = 'danger'
+                calificacion['primary_color'] = COLORS['primary'][2]
+                calificacion['secondary_color'] = COLORS['secondary'][2]
             else:
-                calificacion['nivel'] = 'No calificado'
-                calificacion['class'] = ''
+                calificacion['nivel'] = 'No Recomendado'
+                calificacion['primary_color'] = COLORS['primary'][3]
+                calificacion['secondary_color'] = COLORS['secondary'][3]
+            #if total >= 0 and total < 90:
+            #    calificacion['nivel'] = 'Recomendado'
+            #    calificacion['class'] = 'success'
+            #elif total >= 90 and total < 108:
+            #    calificacion['nivel'] = 'Con Reserva'
+            #    calificacion['class'] = 'warning'
+            #elif total >= 108:
+            #    calificacion['nivel'] = 'No Recomendado'
+            #    calificacion['class'] = 'danger'
+            #else:
+            #    calificacion['nivel'] = 'No calificado'
+            #    calificacion['class'] = ''
         return calificacion
     
     def get_respuestas(self):
@@ -285,32 +316,47 @@ class Evaluacion(models.Model):
                 nivel_n = 3                
                 clase = ''
                 total = 0
+                inverso = 0
                 for r in respuestas.filter(conducta__competencia=competencia):
                     if r.respuesta > 0: total += r.respuesta
-                if total >= competencia.apto_min and total <= competencia.apto_max:
-                    nivel = 'Recomendado'
-                    nivel_n = 0
-                    clase = 'success'
-                elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
-                    nivel = 'Con Reserva'
-                    nivel_n = 2
-                    clase = 'warning'
-                elif total >= competencia.no_apto_min:
-                    nivel = 'No Recomendado'
-                    nivel_n = 3
-                    clase = 'danger'
                 if total > 0:
                     porciento = total / competencia.get_sum_total()
+                    inverso = 1-(total/competencia.no_apto_max)
                 else:
                     porciento = 0
+                    inverso = 0
+                #if total >= competencia.apto_min and total <= competencia.apto_max:
+                #    nivel = 'Recomendado'
+                #    nivel_n = 0
+                #    clase = 'success'
+                #elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
+                #    nivel = 'Con Reserva'
+                #    nivel_n = 2
+                #    clase = 'warning'
+                #elif total >= competencia.no_apto_min:
+                #    nivel = 'No Recomendado'
+                #    nivel_n = 3
+                #    clase = 'danger'
+                if inverso <= 0.33:
+                    nivel = 'No Recomendado'
+                    nivel_n = 3
+                elif inverso <= 0.66:
+                    nivel = 'Con Reserva'
+                    nivel_n = 2
+                else:
+                    nivel = 'Recomendado'
+                    nivel_n = 0
                 resultados.append({
                     'competencia': competencia,
                     'total': total,
                     'nivel': nivel,
                     'nivel_n': nivel_n,
-                    'porciento': int(porciento * 100),
-                    'class': clase,
-                    'totales': competencia.get_barras(total)
+                    'inverso': int(inverso * 100),
+                    'primary_color': COLORS['primary'][nivel_n],
+                    'secondary_color': COLORS['secondary'][nivel_n],
+                    #'porciento': int(porciento * 100),
+                    #'class': clase,
+                    #'totales': competencia.get_barras(total)
                 })
             except Exception as e:
                 print('Error: {}'.format(e))

@@ -12,6 +12,8 @@ lista_competencias = {
         'no_apto': 'Incapacidad para participar activamente y compartir logros con los compañeros de trabajo.',
         'no_apto_min': 14,
         'no_apto_max': 24,
+        'tipo': 0,
+        'contra_titulo': 'INADAPTABILIDAD',
     },
     'CULTURA DE AUTOCUIDADO': {
         'descripcion': 'Es la capacidad de preservar las normas de seguridad e higiene por convicción y promoverla entre los compañeros. Se refiere a una conducta que se dirige hacia sí mismo o hacia el entorno para regular los factores que afectan a su propio desarrollo y actividad en beneficio de la vida, salud y bienestar.',
@@ -24,6 +26,8 @@ lista_competencias = {
         'no_apto': 'Tiene dificultad para preservar su calidad de vida, puede infringir los reglamentos de seguridad aun conociéndolos o acatarlos solo cuando se sabe observado. Es importante relacionar este con el rublo de impulsividad, si en ambos la ponderación es no apto el riesgo se maximiza.',
         'no_apto_min': 24,
         'no_apto_max': 42,
+        'tipo': 0,
+        'contra_titulo': 'NEGLIGENCIA',
     },
     'IMPULSIVIDAD': {
         'descripcion': 'Implica respuestas caracterizadas por responder rápido y sin demasiado análisis, generado cuando la persona se enfrenta a problemáticas que cuentan con varias opciones de solución. Es la capacidad para controlar emociones personales y evitar reacciones negativas. Es la tendencia a proceder de momento sin tener en cuentas las consecuencias a futuro, actuar sin pensar. Falta de una evaluación adecuada del contexto, dificultad para retardar las recompensas y la toma de decisiones rápidas.',
@@ -36,6 +40,8 @@ lista_competencias = {
         'no_apto': 'Suele conducirse de forma impulsiva, generando reacciones negativas entre compañeros. Actúa notablemente molesto en momentos de trabajo de alta exigencia, viéndose mermado su rendimiento. Puede generar conflictos constantemente, obstaculizando acciones rápidas en jornadas de trabajo de alta exigencia. En épocas de alta presión, quizá actúe desequilibradamente en sus reacciones haca sus pares, aportando más tensión, generando un clima laboral conflictivo y bajando el rendimiento de su área.',
         'no_apto_min': 21,
         'no_apto_max': 55,
+        'tipo': 1,
+        'contra_titulo': 'CONTROL DE IMPULSOS',
     },
     'MANEJO DE CONFLICTOS':{
         'descripcion': 'Es la capacidad para justificar o explicar los problemas surgidos, los fracasos o los acontecimientos negativos. Implica seguir adelante en medio de circunstancias adversas. Se asocia a la versatilidad del comportamiento para adaptarse a distintos contextos, situaciones y personas de forma rápida y adecuada. Habilidad para establecer relaciones efectivas con individuos y grupos complejos.',
@@ -48,6 +54,8 @@ lista_competencias = {
         'no_apto': 'Le cuesta trabajo establecer relaciones con personas y grupos complejos. Solo opera de forma adecuada cuando se mueve dentro de vínculos conocidos. Probablemente tenga dificultades para obtener apoyo de los demás para llevar a cabo las tareas organizacionales. Puede presentar sensación de minusvalía e ideas no fundamentadas sobre una percepción negativa de sus compañeros y jefes.',
         'no_apto_min': 27,
         'no_apto_max': 116,
+        'tipo': 0,
+        'contra_titulo': 'SUCEPTIBILIDAD INTERPERSONAL',
     },
     'APEGO A LA NORMA':{
         'descripcion': 'Es la capacidad de seguir instrucciones, se asocia con el cumplimiento a los reglamentos establecidos por la compañía. La normatividad asignada está primero.',
@@ -60,6 +68,8 @@ lista_competencias = {
         'no_apto': 'Presenta conflictos con la autoridad, también se asocia con conductas deshonestas. Aun conociendo las normas institucionales podrá no acatarlas. Requiere supervisión permanente. Cumple con plazos o alcanza la calidad, pero difícilmente ambas cosas a la vez.',
         'no_apto_min': 18,
         'no_apto_max': 78,
+        'tipo': 0,
+        'contra_titulo': 'REBELDÍA',
     },
     'RIESGO ADICTIVO': {
         'descripcion': 'Es el uso regular de substancias que alteran el equilibrio del organismo, pueden ser drogas ilícitas, alcohol o auto prescripción de fármacos.',
@@ -72,6 +82,8 @@ lista_competencias = {
         'no_apto': 'La escala no mide consumo expreso de substancias, por lo que no se puede aseverar que la persona es consumidora, sin embargo, informa riesgo de pares y conductas violentas. Cuando ambos factores correlacionan regularmente está asociado a una conducta de abuso de substancias. Se recomienda especificar las normas institucionales en cuanto a consumo de drogas o alcohol.',
         'no_apto_min': 7,
         'no_apto_max': 27,
+        'tipo': 1,
+        'contra_titulo': 'ENTORNOS SALUDABLES',
     },
     'VIOLENCIA': {
         'descripcion': 'Es al acto intencional de dañar a otra persona o ser vivo ya sea de forma física o psicológica. Implica violencia contra sí mismo, otra persona o un grupo sea en grado de amenaza o efectivo.',
@@ -84,18 +96,22 @@ lista_competencias = {
         'no_apto': 'La persona presenta conductas violentas que pueden afectar significativamente las relaciones interpersonales y con esto perturbar el clima laboral y los procesos productivos. Puede no reconocer dicha conducta por tenerla normalizada dentro de su contexto social.',
         'no_apto_min': 9,
         'no_apto_max': 45,
+        'tipo': 1,
+        'contra_titulo': 'CONVIVENCIA PACÍFICA',
     },
     'LIDERAZGO NEGATIVO': {
         'descripcion': 'Se refiere a un inadecuado uso del poder entre iguales que cuando no es conveniente se vuelve abusivo y agotador. Posee la capacidad de influir negativamente y puede ser utilizado en su beneficio o en contra de la empresa.',
         'apto': 'Su posibilidad de control lo utiliza a favor de la empresa. Tiene la capacidad de influir de manera positiva o negativa en su lugar de trabajo. Se refiere al apego a normas aun cuando no se encuentre de acuerdo.',
         'apto_min': 0,
         'apto_max': 5,
-        'apto_condicionado': 'Puede presentar conductas de alianza con los compañeros en contra de la autoridad. Cuestiona los objetivos comunes, desorganizando el curso de las acciones de todo su equipo de trabajo. No percibe el efecto positivo o negativo de sus acciones. Se requiere explicitarle las rutas para expresar su posible inconformidad  por las vías formales.',
+        'apto_condicionado': 'Puede presentar conductas de alianza con los compañeros en contra de la autoridad. Cuestiona los objetivos comunes, desorganizando el curso de las acciones de todo su equipo de trabajo. No percibe el efecto tipo o negativo de sus acciones. Se requiere explicitarle las rutas para expresar su posible inconformidad  por las vías formales.',
         'apto_condicionado_min': 6,
         'apto_condicionado_max': 8,
         'no_apto': 'La persona puede persuadir a los compañeros de trabajo para efectuar conductas en contra de la autoridad, es posible que la causa sea justa, sin embargo, falla en el procedimiento de hacer valer sus derechos. Los demás no saben qué esperar de él. No siente compromiso con la visión y los objetivos de la organización, y transmite apatía al equipo.',
         'no_apto_min': 9,
         'no_apto_max': 32,
+        'tipo': 1,
+        'contra_titulo': 'LIDERAZGO POSITIVO',
     },
 }
 

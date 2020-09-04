@@ -84,7 +84,7 @@ def inserts_all():
 
 def patch1():
     """
-      Patch para cambios del 21 de Marzo, 2019
+      Patch para cambios del 21 de Marzo, 2020
     """
     # Localidades
     try:
@@ -96,5 +96,18 @@ def patch1():
     for nombre_competencia in lista_competencias.keys():
         view_competencia = Competencia.objects.get(nombre=nombre_competencia)
         view_competencia.no_apto_max = lista_competencias[nombre_competencia]['no_apto_max']
+        view_competencia.save()
+        print('{} actualizada'.format(nombre_competencia))
+
+def patch2():
+    """
+        Patch para cambios del 18 de Agosto, 2020
+    """
+    print('Patch2 :: 18 Agosto 2020')
+    # Competencias
+    for nombre_competencia in lista_competencias.keys():
+        view_competencia = Competencia.objects.get(nombre=nombre_competencia)
+        view_competencia.tipo = lista_competencias[nombre_competencia]['tipo']
+        view_competencia.contra_titulo = lista_competencias[nombre_competencia]['contra_titulo']
         view_competencia.save()
         print('{} actualizada'.format(nombre_competencia))

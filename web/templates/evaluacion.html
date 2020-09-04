@@ -71,6 +71,7 @@
   </div>
 </div>
 {% endcomment %}
+{% comment %}
 <div class="panel panel-default">
   <div class="panel-heading">Resultados</div>
   <div class="panel-body">
@@ -84,17 +85,6 @@
       var r_data_apto = [];
       var r_data_apto_condicionado = [];
       var r_data_no_apto = [];
-
-      {% comment %}
-      {% for resultado in evaluacion.get_resultados %}
-      r_lables.push('{{ resultado.competencia.nombre|title }}');
-      r_data.push({{ resultado.porciento }});
-      r_colors.push({% if resultado.class == 'success' %}'#008000'{% elif resultado.class == 'warning' %}'#ffff00'{% else %}'#ff0000'{% endif%});
-      {% endfor %}       
-      r_lables.push('Total');
-      r_data.push({{ evaluacion.get_calificacion.porciento }});
-      r_colors.push({% if evaluacion.get_calificacion.class == 'success' %}'#008000'{% elif evaluacion.get_calificacion.class == 'warning' %}'#ffff00'{% else %}'#ff0000'{% endif%});
-      {% endcomment %}
 
       {% for resultado in evaluacion.get_resultados %}
       r_labels.push('{{ resultado.competencia.nombre|title }}: {{ resultado.totales.total }}%');
@@ -132,16 +122,6 @@
 
       var myChart = new Chart(ctx, {
           type: 'horizontalBar',
-          {% comment %}
-          data: {
-              labels: r_lables,
-              datasets: [{
-                label: ['Total'],
-                data: r_data,
-                backgroundColor: r_colors
-              }]
-          },
-          {% endcomment %}
           data: r_data,
           options: {
               legend: {
@@ -163,22 +143,58 @@
               },
               animation: {
                 onComplete: function(){
-                  {% comment %}
-                  var ctx = this.chart.ctx;
-                  this.data.datasets.forEach(function (dataset){
-                    for (var i = 0; i < dataset.data.length; i++) {
-                      for(var key in dataset._meta){
-                        var model = dataset._meta[key].data[i]._model;
-                        ctx.fillText(" " + dataset.data[i] + "%", model.x, model.y - 5);
-                      }
-                    }
-                  });
-                  {% endcomment %}
                 }
               }
           }
       });
     </script>
+  </div>
+</div>
+{% endcomment %}
+<div class="panel panel-default">
+  <div class="panel-heading">Resultados</div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <td width="200px">&nbsp;</td>
+          <td width="15px">&nbsp;</td>
+          <td>
+              <div style="width: 100%;">
+                <div style="display: inline-block; width: 30%; background-color:{{ COLORS.primary.3 }} !important;margin:0px;padding:0px;text-align: center;"><small>No Recomendado</small></div>
+                <div style="display: inline-block; width: 30%; background-color:{{ COLORS.primary.2 }} !important;margin:0px;padding:0px;text-align: center;"><small>Con Reserva</small></div>
+                <div style="display: inline-block; width: 30%; background-color:{{ COLORS.primary.0 }} !important;margin:0px;padding:0px;text-align: center;"><small>Recomendado</small></div>
+              </div>
+          </td>
+          <td width="200px">&nbsp;</td>
+        </tr>
+        <tr>
+          <th>Global</th>
+          <td>{{ evaluacion.get_calificacion.inverso }}%</td>
+          <th>
+            <div style="width: 100%;">
+              <div style="width: {{ evaluacion.get_calificacion.inverso }}%; background-color: {{ evaluacion.get_calificacion.primary_color }} !important;">&nbsp;</div>
+            </div>
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for resultado in evaluacion.get_resultados %}
+        <tr>
+          <td><small>{% if resultado.competencia.tipo == 0 %}{{ resultado.competencia.contra_titulo|title }}{% else %}{{ resultado.competencia.nombre|title }}{% endif %}</small></td>
+          <td><small>{{ resultado.inverso }}%</small></td>
+          <td>
+            <div style="width: 100%; background:#fff;">
+              <div style="width: {{ resultado.inverso }}%; background-color: {{ resultado.primary_color }} !important;">&nbsp;
+              </div>
+            </div>
+          </td>
+          <td><small>{% if resultado.competencia.tipo == 1 %}{{ resultado.competencia.contra_titulo|title }}{% else %}{{ resultado.competencia.nombre|title }}{% endif %}</small></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 <div class="panel panel-default new_page">
@@ -194,19 +210,19 @@
                   <h4>Descripción</h4>
                   <p class="competencia_text">{{ resultado.competencia.descripcion }}</p>
                 </div>
-                {% if resultado.nivel == 'Apto' %}
+                {% if resultado.nivel_n == 0 %}
                 <div class="competencia_description">
                   <h4>Apto</h4>
                   <p class="competencia_text">{{ resultado.competencia.apto }}</p>
                 </div>
                 {% endif %}
-                {% if resultado.nivel == 'Apto Condicionado' %}
+                {% if resultado.nivel_n == 2 %}
                 <div class="competencia_description">
                   <h4>Apto Condicionado</h4>
                   <p class="competencia_text">{{ resultado.competencia.apto_condicionado }}</p>
                 </div>
                 {% endif %}
-                {% if resultado.nivel == 'No Apto' %}
+                {% if resultado.nivel_n == 3 %}
                 <div class="competencia_description">
                   <h4>No Apto</h4>
                   <p class="competencia_text">{{ resultado.competencia.no_apto }}</p>

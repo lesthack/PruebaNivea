@@ -108,6 +108,7 @@ def evaluacion_view(request, evaluacion_id):
         return HttpResponseRedirect('/evaluaciones/')
     return render(request, 'evaluacion.html',{
         'evaluacion': view_evaluacion,
+        'COLORS': COLORS
     })
 
 @login_required(login_url='/auth')

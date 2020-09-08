@@ -275,17 +275,17 @@ class Evaluacion(models.Model):
                 'inverso': int(inverso*100)
             }
             if inverso <= 0.33:
-                calificacion['nivel'] = 'Recomendado'
-                calificacion['primary_color'] = COLORS['primary'][0]
-                calificacion['secondary_color'] = COLORS['secondary'][0]
+                calificacion['nivel'] = 'No Recomendado'
+                calificacion['primary_color'] = COLORS['primary'][3]
+                calificacion['secondary_color'] = COLORS['secondary'][3]
             elif inverso <= 0.66:
                 calificacion['nivel'] = 'Con Reserva'
                 calificacion['primary_color'] = COLORS['primary'][2]
                 calificacion['secondary_color'] = COLORS['secondary'][2]
             else:
-                calificacion['nivel'] = 'No Recomendado'
-                calificacion['primary_color'] = COLORS['primary'][3]
-                calificacion['secondary_color'] = COLORS['secondary'][3]
+                calificacion['nivel'] = 'Recomendado'
+                calificacion['primary_color'] = COLORS['primary'][0]
+                calificacion['secondary_color'] = COLORS['secondary'][0]
             #if total >= 0 and total < 90:
             #    calificacion['nivel'] = 'Recomendado'
             #    calificacion['class'] = 'success'
@@ -319,12 +319,8 @@ class Evaluacion(models.Model):
                 inverso = 0
                 for r in respuestas.filter(conducta__competencia=competencia):
                     if r.respuesta > 0: total += r.respuesta
-                if total > 0:
-                    porciento = total / competencia.get_sum_total()
-                    inverso = 1-(total/competencia.no_apto_max)
-                else:
-                    porciento = 0
-                    inverso = 0
+                porciento = total / competencia.get_sum_total()
+                inverso = 1-(total/competencia.no_apto_max)
                 #if total >= competencia.apto_min and total <= competencia.apto_max:
                 #    nivel = 'Recomendado'
                 #    nivel_n = 0

@@ -258,6 +258,7 @@ class Evaluacion(models.Model):
     def get_calificacion(self, competencia=None):
         total = 0
         porciento = 0
+        inverso = 0
         calificacion = {
         }
         if competencia:
@@ -319,8 +320,9 @@ class Evaluacion(models.Model):
                 inverso = 0
                 for r in respuestas.filter(conducta__competencia=competencia):
                     if r.respuesta > 0: total += r.respuesta
-                porciento = total / competencia.get_sum_total()
-                inverso = 1-(total/competencia.no_apto_max)
+                if total > 0:
+                    porciento = total / competencia.get_sum_total()
+                    inverso = 1-(total/competencia.no_apto_max)
                 #if total >= competencia.apto_min and total <= competencia.apto_max:
                 #    nivel = 'Recomendado'
                 #    nivel_n = 0

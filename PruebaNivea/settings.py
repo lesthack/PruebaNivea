@@ -3,7 +3,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@i$by$-!*q&wro%+_o7p0wjrn=3=i$eg&egy)sfw-6*4xo=*5o'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'core.apps.CoreConfig',

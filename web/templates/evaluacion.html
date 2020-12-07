@@ -183,10 +183,20 @@
         {% for resultado in evaluacion.get_resultados %}
         <tr>
           <td><small>{% if resultado.competencia.tipo == 0 %}{{ resultado.competencia.contra_titulo|title }}{% else %}{{ resultado.competencia.nombre|title }}{% endif %}</small></td>
-          <td><small>{{ resultado.inverso }}%</small></td>
+          <td>
+            <small>
+            {% if resultado.inverso >= 0%}
+              {{ resultado.inverso }}%  
+            {% else %}
+              Respuestas Incompletas
+            {% endif %}
+            </small>
+          </td>
           <td>
             <div style="width: 100%; background:#fff;">
-              <div style="width: {{ resultado.inverso }}%; background-color: {{ resultado.primary_color }} !important;">&nbsp;
+              {% if resultado.inverso >= 0%}
+                <div style="width: {{ resultado.inverso }}%; background-color: {{ resultado.primary_color }} !important;">&nbsp;
+              {% endif %}
               </div>
             </div>
           </td>
@@ -203,33 +213,35 @@
       <table class="table">
         <tbody>
           {% for resultado in evaluacion.get_resultados %}
-            <tr>
-              <td>
-                <h3 class="competencia_title">{{ resultado.competencia.nombre|title }}</h3>
-                <div class="competencia_description">
-                  <h4>Descripción</h4>
-                  <p class="competencia_text">{{ resultado.competencia.descripcion }}</p>
-                </div>
-                {% if resultado.nivel_n == 0 %}
-                <div class="competencia_description">
-                  <h4>Apto</h4>
-                  <p class="competencia_text">{{ resultado.competencia.apto }}</p>
-                </div>
-                {% endif %}
-                {% if resultado.nivel_n == 2 %}
-                <div class="competencia_description">
-                  <h4>Apto Condicionado</h4>
-                  <p class="competencia_text">{{ resultado.competencia.apto_condicionado }}</p>
-                </div>
-                {% endif %}
-                {% if resultado.nivel_n == 3 %}
-                <div class="competencia_description">
-                  <h4>No Apto</h4>
-                  <p class="competencia_text">{{ resultado.competencia.no_apto }}</p>
-                </div>
-                {% endif %}
-              </td>
-            </tr>
+            {% if resultado.inverso >= 0%}
+              <tr>
+                <td>
+                  <h3 class="competencia_title">{{ resultado.competencia.nombre|title }}</h3>
+                  <div class="competencia_description">
+                    <h4>Descripción</h4>
+                    <p class="competencia_text">{{ resultado.competencia.descripcion }}</p>
+                  </div>
+                  {% if resultado.nivel_n == 0 %}
+                  <div class="competencia_description">
+                    <h4>Apto</h4>
+                    <p class="competencia_text">{{ resultado.competencia.apto }}</p>
+                  </div>
+                  {% endif %}
+                  {% if resultado.nivel_n == 2 %}
+                  <div class="competencia_description">
+                    <h4>Apto Condicionado</h4>
+                    <p class="competencia_text">{{ resultado.competencia.apto_condicionado }}</p>
+                  </div>
+                  {% endif %}
+                  {% if resultado.nivel_n == 3 %}
+                  <div class="competencia_description">
+                    <h4>No Apto</h4>
+                    <p class="competencia_text">{{ resultado.competencia.no_apto }}</p>
+                  </div>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endif %}
           {% endfor %}
         </tbody>
       </table>

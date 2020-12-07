@@ -286,19 +286,7 @@ class Evaluacion(models.Model):
             else:
                 calificacion['nivel'] = 'Recomendado'
                 calificacion['primary_color'] = COLORS['primary'][0]
-                calificacion['secondary_color'] = COLORS['secondary'][0]
-            #if total >= 0 and total < 90:
-            #    calificacion['nivel'] = 'Recomendado'
-            #    calificacion['class'] = 'success'
-            #elif total >= 90 and total < 108:
-            #    calificacion['nivel'] = 'Con Reserva'
-            #    calificacion['class'] = 'warning'
-            #elif total >= 108:
-            #    calificacion['nivel'] = 'No Recomendado'
-            #    calificacion['class'] = 'danger'
-            #else:
-            #    calificacion['nivel'] = 'No calificado'
-            #    calificacion['class'] = ''
+                calificacion['secondary_color'] = COLORS['secondary'][0]            
         return calificacion
     
     def get_respuestas(self):
@@ -310,31 +298,20 @@ class Evaluacion(models.Model):
         """
         respuestas = self.get_respuestas()
         resultados = []
+        #print("== Evaluacion {} ==".format(self.nombre_persona))
         for competencia in Competencia.objects.all().order_by('nombre'):
-            try:
-                #total = respuestas.filter(conducta__competencia=competencia).values('conducta__competencia').annotate(total=Sum('respuesta'))[0]['total']
+            try:                
                 nivel = 'No Calificado'
                 nivel_n = 3                
                 clase = ''
                 total = 0
-                inverso = 0
+                inverso = -1
                 for r in respuestas.filter(conducta__competencia=competencia):
-                    if r.respuesta > 0: total += r.respuesta
-                if total > 0:
+                    #print(competencia, r.conducta, r.respuesta)
+                    if r.respuesta > 0: total += r.respuesta                
+                if total >= 0 and respuestas.filter(conducta__competencia=competencia, respuesta__gte=0).count() > 0:
                     porciento = total / competencia.get_sum_total()
-                    inverso = 1-(total/competencia.no_apto_max)
-                #if total >= competencia.apto_min and total <= competencia.apto_max:
-                #    nivel = 'Recomendado'
-                #    nivel_n = 0
-                #    clase = 'success'
-                #elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
-                #    nivel = 'Con Reserva'
-                #    nivel_n = 2
-                #    clase = 'warning'
-                #elif total >= competencia.no_apto_min:
-                #    nivel = 'No Recomendado'
-                #    nivel_n = 3
-                #    clase = 'danger'
+                    inverso = 1-(total/competencia.no_apto_max)                
                 if inverso <= 0.33:
                     nivel = 'No Recomendado'
                     nivel_n = 3

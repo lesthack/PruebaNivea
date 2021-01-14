@@ -275,18 +275,38 @@ class Evaluacion(models.Model):
                 'porciento': int(porciento * 100),
                 'inverso': int(inverso*100)
             }
-            if inverso <= 0.33:
-                calificacion['nivel'] = 'No Recomendado'
-                calificacion['primary_color'] = COLORS['primary'][3]
-                calificacion['secondary_color'] = COLORS['secondary'][3]
-            elif inverso <= 0.66:
+            # Usando puntos
+            if total <= 75:
+                calificacion['nivel'] = 'Recomendado'
+                calificacion['primary_color'] = COLORS['primary'][0]
+                calificacion['secondary_color'] = COLORS['secondary'][0]
+                # Valores estáticos
+                calificacion['inverso'] = int(100 - total/(75)*33)
+            elif total >= 76 and total <= 83:
                 calificacion['nivel'] = 'Con Reserva'
                 calificacion['primary_color'] = COLORS['primary'][2]
                 calificacion['secondary_color'] = COLORS['secondary'][2]
+                # Valores estáticos
+                calificacion['inverso'] = int(100 - (33+((total-76)/(83-76))*33))
             else:
-                calificacion['nivel'] = 'Recomendado'
-                calificacion['primary_color'] = COLORS['primary'][0]
-                calificacion['secondary_color'] = COLORS['secondary'][0]            
+                calificacion['nivel'] = 'No Recomendado'
+                calificacion['primary_color'] = COLORS['primary'][3]
+                calificacion['secondary_color'] = COLORS['secondary'][3]
+                # Valores estáticos
+                calificacion['inverso'] = int(100 - (67+((total-84)/(_sum_['v__sum']-84))*33))
+            # Usando Porcentajes
+            #if inverso <= 0.33:
+            #    calificacion['nivel'] = 'No Recomendado'
+            #    calificacion['primary_color'] = COLORS['primary'][3]
+            #    calificacion['secondary_color'] = COLORS['secondary'][3]
+            #elif inverso <= 0.66:
+            #    calificacion['nivel'] = 'Con Reserva'
+            #    calificacion['primary_color'] = COLORS['primary'][2]
+            #    calificacion['secondary_color'] = COLORS['secondary'][2]
+            #else:
+            #    calificacion['nivel'] = 'Recomendado'
+            #    calificacion['primary_color'] = COLORS['primary'][0]
+            #    calificacion['secondary_color'] = COLORS['secondary'][0]            
         return calificacion
     
     def get_respuestas(self):
@@ -301,7 +321,7 @@ class Evaluacion(models.Model):
         #print("== Evaluacion {} ==".format(self.nombre_persona))
         for competencia in Competencia.objects.all().order_by('nombre'):
             try:                
-                nivel = 'No Calificado'
+                nivel = 'Sin calificación'
                 nivel_n = 3                
                 clase = ''
                 total = 0
@@ -310,23 +330,52 @@ class Evaluacion(models.Model):
                     #print(competencia, r.conducta, r.respuesta)
                     if r.respuesta > 0: total += r.respuesta                
                 if total >= 0 and respuestas.filter(conducta__competencia=competencia, respuesta__gte=0).count() > 0:
-                    porciento = total / competencia.get_sum_total()
-                    inverso = 1-(total/competencia.no_apto_max)                
-                if inverso <= 0.33:
-                    nivel = 'No Recomendado'
-                    nivel_n = 3
-                elif inverso <= 0.66:
-                    nivel = 'Con Reserva'
-                    nivel_n = 2
-                else:
-                    nivel = 'Recomendado'
-                    nivel_n = 0
+                    porciento = total/competencia.get_sum_total()
+                    inverso = 1-(total/competencia.no_apto_max)
+                    # Apto
+                    if total >= competencia.apto_min and total <= competencia.apto_max:
+                        nivel = 'Recomendado'
+                        nivel_n = 0
+                        if competencia.apto_max == competencia.apto_min:
+                            factor = 1
+                        else:
+                            factor = competencia.apto_max-competencia.apto_min
+                        inverso = 100 - ((total-competencia.apto_min)/factor)*33
+                    # Apto Condicionado
+                    elif total >= competencia.apto_condicionado_min and total <= competencia.apto_condicionado_max:
+                        nivel = 'Con Reserva'
+                        nivel_n = 2
+                        if competencia.apto_condicionado_max == competencia.apto_condicionado_min:
+                            factor = 1
+                        else:
+                            factor = competencia.apto_condicionado_max-competencia.apto_condicionado_min
+                        inverso = 100 - (33+((total-competencia.apto_condicionado_min)/factor)*33)
+                    # No Apto
+                    elif total >= competencia.no_apto_min and total <= competencia.no_apto_max:
+                        nivel = 'No Recomendado'
+                        nivel_n = 3
+                        if competencia.no_apto_max == competencia.no_apto_min:
+                            factor = 1
+                        else:
+                            factor = competencia.no_apto_max-competencia.no_apto_min
+                        inverso = 100 - (66+((total-competencia.no_apto_min)/factor)*33)
+                    # Porcentajes
+                    #if inverso <= 0.33:
+                    #    nivel = 'No Recomendado'
+                    #    nivel_n = 3
+                    #elif inverso <= 0.66:
+                    #    nivel = 'Con Reserva'
+                    #    nivel_n = 2
+                    #else:
+                    #    nivel = 'Recomendado'
+                    #    nivel_n = 0
+                
                 resultados.append({
                     'competencia': competencia,
                     'total': total,
                     'nivel': nivel,
                     'nivel_n': nivel_n,
-                    'inverso': int(inverso * 100),
+                    'inverso': int(inverso),
                     'primary_color': COLORS['primary'][nivel_n],
                     'secondary_color': COLORS['secondary'][nivel_n],
                     #'porciento': int(porciento * 100),

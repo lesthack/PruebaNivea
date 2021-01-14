@@ -111,3 +111,23 @@ def patch2():
         view_competencia.contra_titulo = lista_competencias[nombre_competencia]['contra_titulo']
         view_competencia.save()
         print('{} actualizada'.format(nombre_competencia))
+
+def patch3():
+    """
+        Patch sobre ajuste de valores min y max
+    """
+    print('Patch3 :: 14 Enero 2021')
+    # Competencias
+    for nombre_competencia in lista_competencias.keys():
+        view_competencia = Competencia.objects.get(nombre=nombre_competencia)
+        #apto
+        view_competencia.apto_min = lista_competencias[nombre_competencia]['apto_min']
+        view_competencia.apto_max = lista_competencias[nombre_competencia]['apto_max']
+        #apto_condicionado
+        view_competencia.apto_condicionado_min = lista_competencias[nombre_competencia]['apto_condicionado_min']
+        view_competencia.apto_condicionado_max = lista_competencias[nombre_competencia]['apto_condicionado_max']
+        #no_apto
+        view_competencia.no_apto_min = lista_competencias[nombre_competencia]['no_apto_min']
+        view_competencia.no_apto_max = lista_competencias[nombre_competencia]['no_apto_max']
+        view_competencia.save()
+        print('{} actualizada'.format(nombre_competencia))
